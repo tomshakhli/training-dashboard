@@ -1,4 +1,4 @@
-const ORIGINS = ['https://tomshakhli.github.io','http://localhost:3000','http://localhost:5173'];
+const ORIGINS = ['https://tomshakhli.github.io','http://localhost:3000','http://localhost:5173','null'];
 const BASE = 'https://intervals.icu';
 
 function cors(origin) {
@@ -25,9 +25,15 @@ export default {
     var h = new Headers();
     var auth = request.headers.get('Authorization');
     if (auth) h.set('Authorization', auth);
+    var ct = request.headers.get('Content-Type');
+    if (ct) h.set('Content-Type', ct);
     h.set('Accept', 'application/json');
+    var opts = {method: request.method, headers: h};
+    if (request.method !== 'GET' && request.method !== 'HEAD') {
+      opts.body = await request.text();
+    }
     try {
-      var resp = await fetch(target, {method: request.method, headers: h});
+      var resp = await fetch(target, opts);
       var rh = new Headers(resp.headers);
       rh.set('Access-Control-Allow-Origin', origin);
       rh.set('Access-Control-Allow-Credentials', 'true');
