@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Training Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-adapter-date-fns/3.0.0/chartjs-adapter-date-fns.bundle.min.js"></script>
+<style>
+:root {
+  --bg: #0f1117; --card: #1a1d24; --border: #2a2d35; --grid: #1e2128;
+  --text: #c8cad0; --muted: #6b6f7b; --bright: #f0f0f2; --white: #fff;
+  --fitness: #5DCAA5; --fatigue: #F09575; --form: #85B7EB;
+  --easy: #378ADD; --quality: #EF9F27; --race: #E24B4A; --ride: #AFA9EC;
+  --green: #5DCAA5; --amber: #EF9F27; --red: #E24B4A;
+  --fm: 'JetBrains Mono', monospace; --fs: 'DM Sans', sans-serif;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: var(--fs); min-height: 100vh; }
+
+/* LOGIN */
+.login-screen { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; }
+.login-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 32px; width: 100%; max-width: 400px; }
+.login-card h1 { font-size: 20px; font-weight: 600; color: var(--white); margin-bottom: 4px; }
+.login-card p { font-size: 13px; color: var(--muted); margin-bottom: 20px; }
+.login-card label { display: block; font-size: 11px; font-family: var(--fm); color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 4px; margin-top: 12px; }
+.login-card input { width: 100%; padding: 8px 12px; background: var(--bg); border: 1px solid var(--border); border-radius: 6px; color: var(--bright); font-family: var(--fm); font-size: 13px; outline: none; }
+.login-card input:focus { border-color: var(--fitness); }
+.login-card button { width: 100%; margin-top: 20px; padding: 10px; background: var(--fitness); color: var(--bg); border: none; border-radius: 6px; font-family: var(--fs); font-weight: 600; font-size: 14px; cursor: pointer; }
+.login-card button:hover { opacity: 0.9; }
+.login-card button:disabled { opacity: 0.5; cursor: not-allowed; }
+.login-error { color: var(--red); font-size: 12px; margin-top: 8px; font-family: var(--fm); }
+.remember-row { display: flex; align-items: center; gap: 6px; margin-top: 12px; font-size: 12px; color: var(--muted); }
+.remember-row input[type=checkbox] { accent-color: var(--fitness); }
+.proxy-note { font-size: 11px; color: var(--muted); margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--border); line-height: 1.5; }
+.proxy-note code { background: var(--bg); padding: 1px 4px; border-radius: 3px; font-family: var(--fm); font-size: 10px; }
+
+/* DASHBOARD */
+.dashboard { padding: 0 16px 40px; max-width: 1200px; margin: 0 auto; display: none; }
+.header { padding: 20px 0 14px; border-bottom: 1px solid var(--border); margin-bottom: 16px; }
+.header-top { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 8px; }
+.athlete-name { font-size: 20px; font-weight: 600; color: var(--white); letter-spacing: -0.02em; }
+.phase-tag { padding: 3px 10px; font-size: 10px; font-family: var(--fm); letter-spacing: 0.06em; text-transform: uppercase; background: rgba(93,202,165,0.08); color: var(--fitness); border-radius: 4px; border: 1px solid rgba(93,202,165,0.15); margin-left: 10px; }
+.date-label { font-size: 12px; color: var(--muted); font-family: var(--fm); }
+.race-badges { display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap; }
+.race-badge { display: inline-flex; align-items: center; gap: 8px; padding: 5px 12px; border-radius: 6px; }
+.race-badge.upcoming { background: rgba(226,75,74,0.07); border: 1px solid rgba(226,75,74,0.13); }
+.race-badge.completed { background: rgba(239,159,39,0.06); border: 1px solid rgba(239,159,39,0.12); }
+.race-days { font-family: var(--fm); font-size: 14px; font-weight: 600; }
+.race-label { font-size: 12px; color: var(--muted); }
+
+.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.grid-full { grid-column: 1 / -1; }
+.card { background: var(--card); border-radius: 10px; padding: 14px 18px; border: 1px solid var(--border); }
+.card-title { font-size: 10px; font-family: var(--fm); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+.metrics-bar { display: flex; gap: 16px; flex-wrap: wrap; }
+.metric { flex: 1; min-width: 100px; }
+.metric-label { font-size: 10px; font-family: var(--fm); color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 2px; }
+.metric-value { font-size: 22px; font-weight: 600; font-family: var(--fm); }
+.metric-unit { font-size: 11px; color: var(--muted); margin-left: 6px; }
+
+.chart-container { position: relative; width: 100%; }
+.toggle-row { display: flex; gap: 3px; }
+.toggle-btn { padding: 2px 8px; font-size: 10px; font-family: var(--fm); border: 1px solid var(--border); background: transparent; color: var(--muted); border-radius: 4px; cursor: pointer; }
+.toggle-btn.active { border-color: var(--fitness); background: rgba(93,202,165,0.09); color: var(--fitness); }
+.legend-row { display: flex; gap: 14px; margin-bottom: 6px; font-size: 11px; font-family: var(--fm); color: var(--muted); }
+.legend-dot { width: 7px; height: 7px; border-radius: 2px; display: inline-block; margin-right: 4px; vertical-align: middle; }
+
+.progress-outer { height: 5px; background: rgba(107,111,123,0.09); border-radius: 3px; overflow: hidden; margin-bottom: 2px; }
+.progress-inner { height: 100%; border-radius: 3px; transition: width 0.5s; }
+.progress-labels { display: flex; justify-content: space-between; font-size: 10px; font-family: var(--fm); color: var(--muted); margin-bottom: 12px; }
+
+.wellness-row { display: flex; gap: 12px; flex-wrap: wrap; }
+.wellness-item { flex: 1; min-width: 130px; padding: 10px 12px; background: var(--bg); border-radius: 8px; }
+.wellness-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 3px; }
+.wellness-label { font-size: 10px; font-family: var(--fm); color: var(--muted); }
+.wellness-value { font-size: 18px; font-weight: 600; font-family: var(--fm); color: var(--bright); margin-bottom: 5px; }
+.wellness-unit { font-size: 11px; color: var(--muted); margin-left: 4px; font-weight: 400; }
+.trend-arrow { font-family: var(--fm); font-size: 12px; }
+
+.session-card { display: flex; gap: 10px; padding: 8px 12px; border-radius: 7px; cursor: pointer; margin-bottom: 5px; border-left: 3px solid transparent; }
+.session-name { font-size: 13px; font-weight: 500; color: var(--bright); margin-bottom: 1px; }
+.session-meta { font-size: 11px; font-family: var(--fm); color: var(--muted); }
+.session-date { font-size: 10px; font-family: var(--fm); color: var(--muted); text-align: right; min-width: 40px; }
+.session-extra { margin-top: 4px; font-size: 11px; font-family: var(--fm); color: var(--muted); }
+
+.empty-state { color: var(--muted); font-size: 12px; font-family: var(--fm); text-align: center; padding: 16px; }
+.loading { color: var(--muted); font-size: 13px; font-family: var(--fm); text-align: center; padding: 40px; }
+.loading-spinner { display: inline-block; width: 20px; height: 20px; border: 2px solid var(--border); border-top-color: var(--fitness); border-radius: 50%; animation: spin 0.8s linear infinite; margin-bottom: 8px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.logout-btn { background: none; border: 1px solid var(--border); color: var(--muted); padding: 3px 10px; font-size: 10px; font-family: var(--fm); border-radius: 4px; cursor: pointer; }
+.logout-btn:hover { color: var(--bright); border-color: var(--muted); }
+
+@media (max-width: 700px) {
+  .grid { grid-template-columns: 1fr; }
+  .metrics-bar { flex-direction: column; gap: 8px; }
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN SCREEN -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-card">
+    <h1>Training Dashboard</h1>
+    <p>Connect to your Intervals.icu account</p>
+    <label>Athlete ID</label>
+    <input type="text" id="athleteId" placeholder="e.g. i344297" autocomplete="username">
+    <label>API Key</label>
+    <input type="password" id="apiKey" placeholder="Your Intervals.icu API key" autocomplete="current-password">
+    <div class="remember-row">
+      <input type="checkbox" id="rememberMe">
+      <label for="rememberMe">Remember me (stored in localStorage)</label>
+    </div>
+    <button id="loginBtn" onclick="doLogin()">Connect</button>
+    <div class="login-error" id="loginError"></div>
+    <div class="proxy-note">
+      Connects to Intervals.icu via a secure proxy. Your credentials are sent directly
+      to the Intervals.icu API — nothing is stored on any server.
+    </div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div class="dashboard" id="dashboard">
+  <!-- Header -->
+  <div class="header">
+    <div class="header-top">
+      <div>
+        <span class="athlete-name" id="athleteName">—</span>
+        <span class="phase-tag">HM build — specific</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <span class="date-label" id="dateLabel"></span>
+        <button class="logout-btn" onclick="doLogout()">Logout</button>
+      </div>
+    </div>
+    <div class="race-badges" id="raceBadges"></div>
+  </div>
+
+  <div class="grid">
+    <!-- Metrics bar -->
+    <div class="card grid-full">
+      <div class="metrics-bar" id="metricsBar">
+        <div class="loading"><div class="loading-spinner"></div><br>Loading...</div>
+      </div>
+    </div>
+
+    <!-- PMC Chart -->
+    <div class="card grid-full">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+        <span class="card-title">Performance management chart</span>
+        <div class="toggle-row">
+          <button class="toggle-btn" data-days="30" onclick="setPmcRange(30)">30d</button>
+          <button class="toggle-btn" data-days="60" onclick="setPmcRange(60)">60d</button>
+          <button class="toggle-btn active" data-days="90" onclick="setPmcRange(90)">90d</button>
+        </div>
+      </div>
+      <div class="legend-row">
+        <span><span class="legend-dot" style="background:var(--fitness)"></span>Fitness</span>
+        <span><span class="legend-dot" style="background:var(--fatigue)"></span>Fatigue</span>
+        <span><span class="legend-dot" style="background:var(--form)"></span>Form</span>
+      </div>
+      <div class="chart-container" style="height:200px"><canvas id="pmcChart"></canvas></div>
+    </div>
+
+    <!-- Weekly mileage -->
+    <div class="card">
+      <div class="card-title">Weekly running mileage</div>
+      <div id="weekMileageHeader"></div>
+      <div class="chart-container" style="height:100px"><canvas id="mileageChart"></canvas></div>
+    </div>
+
+    <!-- Training load -->
+    <div class="card">
+      <div class="card-title">Weekly training load</div>
+      <div class="legend-row" style="font-size:10px">
+        <span><span class="legend-dot" style="background:var(--easy)"></span>Easy</span>
+        <span><span class="legend-dot" style="background:var(--quality)"></span>Quality</span>
+        <span><span class="legend-dot" style="background:var(--race)"></span>Race</span>
+        <span><span class="legend-dot" style="background:var(--ride)"></span>Ride</span>
+      </div>
+      <div class="chart-container" style="height:130px"><canvas id="loadChart"></canvas></div>
+    </div>
+
+    <!-- Wellness -->
+    <div class="card grid-full">
+      <div class="card-title">Wellness — 14 day trends</div>
+      <div class="wellness-row" id="wellnessRow">
+        <div class="loading"><div class="loading-spinner"></div></div>
+      </div>
+    </div>
+
+    <!-- Recent sessions -->
+    <div class="card grid-full">
+      <div class="card-title">Recent sessions</div>
+      <div class="legend-row" style="font-size:10px;margin-bottom:8px">
+        <span><span class="legend-dot" style="background:var(--easy)"></span>Easy</span>
+        <span><span class="legend-dot" style="background:var(--quality)"></span>Quality</span>
+        <span><span class="legend-dot" style="background:var(--race)"></span>Race</span>
+        <span><span class="legend-dot" style="background:var(--ride)"></span>Ride</span>
+      </div>
+      <div id="sessionsContainer">
+        <div class="loading"><div class="loading-spinner"></div></div>
+      </div>
+    </div>
+
+    <!-- Upcoming -->
+    <div class="card grid-full">
+      <div class="card-title">Upcoming workouts</div>
+      <div id="upcomingContainer">
+        <div class="loading"><div class="loading-spinner"></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// =============================================================================
+// CONFIG — Update PROXY_BASE with your deployed Cloudflare Worker URL
+// =============================================================================
+const PROXY_BASE = 'https://intervals-proxy.tomshakhli.workers.dev';
+
+// Race config — hardcoded per spec (Phase 5 makes these configurable)
+const RACES = [
+  { name: 'Bristol Half Marathon', date: '2026-05-10', target: '~1:14' },
+];
+
+// =============================================================================
+// STATE
+// =============================================================================
+let athleteId = '';
+let apiKey = '';
+let wellnessData = [];
+let activitiesData = [];
+let pmcDays = 90;
+let pmcChartInstance = null;
+let mileageChartInstance = null;
+let loadChartInstance = null;
+
+// =============================================================================
+// AUTH
+// =============================================================================
+function doLogin() {
+  athleteId = document.getElementById('athleteId').value.trim();
+  apiKey = document.getElementById('apiKey').value.trim();
+  const remember = document.getElementById('rememberMe').checked;
+
+  if (!athleteId || !apiKey) {
+    document.getElementById('loginError').textContent = 'Both fields required';
+    return;
+  }
+
+  const btn = document.getElementById('loginBtn');
+  btn.disabled = true;
+  btn.textContent = 'Connecting...';
+  document.getElementById('loginError').textContent = '';
+
+  // Test credentials
+  apiFetch('/api/v1/athlete/' + athleteId)
+    .then(data => {
+      if (remember) {
+        localStorage.setItem('icu_athlete', athleteId);
+        localStorage.setItem('icu_key', btoa(apiKey));
+      } else {
+        sessionStorage.setItem('icu_athlete', athleteId);
+        sessionStorage.setItem('icu_key', btoa(apiKey));
+      }
+      showDashboard(data);
+    })
+    .catch(err => {
+      document.getElementById('loginError').textContent = 'Connection failed: ' + err.message;
+      btn.disabled = false;
+      btn.textContent = 'Connect';
+    });
+}
+
+function doLogout() {
+  localStorage.removeItem('icu_athlete');
+  localStorage.removeItem('icu_key');
+  sessionStorage.removeItem('icu_athlete');
+  sessionStorage.removeItem('icu_key');
+  athleteId = '';
+  apiKey = '';
+  document.getElementById('dashboard').style.display = 'none';
+  document.getElementById('loginScreen').style.display = 'flex';
+}
+
+function checkSavedLogin() {
+  let aid = localStorage.getItem('icu_athlete') || sessionStorage.getItem('icu_athlete');
+  let key = localStorage.getItem('icu_key') || sessionStorage.getItem('icu_key');
+  if (aid && key) {
+    athleteId = aid;
+    apiKey = atob(key);
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('dashboard').style.display = 'block';
+    apiFetch('/api/v1/athlete/' + athleteId)
+      .then(data => showDashboard(data))
+      .catch(() => doLogout());
+  }
+}
+
+// =============================================================================
+// API
+// =============================================================================
+function apiFetch(path) {
+  const url = PROXY_BASE + path;
+  return fetch(url, {
+    headers: {
+      'Authorization': 'Basic ' + btoa('API_KEY:' + apiKey),
+      'Accept': 'application/json',
+    },
+  }).then(res => {
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    return res.json();
+  });
+}
+
+// =============================================================================
+// HELPERS
+// =============================================================================
+function toMi(m) { return m * 0.000621371; }
+function fmtPace(secs, meters) {
+  var p = secs / toMi(meters);
+  return Math.floor(p / 60) + ':' + String(Math.round(p % 60)).padStart(2, '0');
+}
+function fmtDur(secs) {
+  var h = Math.floor(secs / 3600), m = Math.floor((secs % 3600) / 60), s = Math.round(secs % 60);
+  if (h > 0) return h + ':' + String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
+  return m + ':' + String(s).padStart(2, '0');
+}
+function fmtDate(d) { return new Date(d + 'T12:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }); }
+function fmtDay(d) { return new Date(d + 'T12:00:00').toLocaleDateString('en-GB', { weekday: 'short' }); }
+function daysTo(d) { return Math.ceil((new Date(d) - new Date()) / 86400000); }
+function weekOf(d) {
+  var dt = new Date(d + 'T12:00:00'), day = dt.getDay(), diff = dt.getDate() - day + (day === 0 ? -6 : 1);
+  return new Date(dt.setDate(diff)).toISOString().split('T')[0];
+}
+function classify(a) {
+  var t = a.type || '';
+  if (t === 'VirtualRide' || t === 'Ride') return 'ride';
+  var n = a.name || '';
+  if (/parkrun|marathon|race|redemption/i.test(n)) return 'race';
+  var tl = a.icu_training_load || a.training_load || 0;
+  if (tl >= 50 || /^DP[\s-]|Track|fartlek|rhythm|1500|6xK/i.test(n)) return 'quality';
+  return 'easy';
+}
+function classColor(c) {
+  return c === 'race' ? '#E24B4A' : c === 'quality' ? '#EF9F27' : c === 'ride' ? '#AFA9EC' : '#378ADD';
+}
+
+// =============================================================================
+// DASHBOARD
+// =============================================================================
+function showDashboard(profile) {
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('dashboard').style.display = 'block';
+
+  var name = (profile.name || profile.firstname || athleteId);
+  document.getElementById('athleteName').textContent = name;
+  document.getElementById('dateLabel').textContent = new Date().toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
+
+  // Race badges
+  var badges = '';
+  RACES.forEach(function(r) {
+    var d = daysTo(r.date);
+    if (d > 0) {
+      badges += '<div class="race-badge upcoming"><span class="race-days" style="color:var(--race)">' + d + 'd</span><span class="race-label">' + r.name + ' — target ' + r.target + '</span></div>';
+    }
+  });
+  document.getElementById('raceBadges').innerHTML = badges;
+
+  loadAllData();
+}
+
+function loadAllData() {
+  var today = new Date().toISOString().split('T')[0];
+  var d90 = new Date(Date.now() - 90 * 86400000).toISOString().split('T')[0];
+  var d7ahead = new Date(Date.now() + 7 * 86400000).toISOString().split('T')[0];
+
+  Promise.all([
+    apiFetch('/api/v1/athlete/' + athleteId + '/wellness?oldest=' + d90 + '&newest=' + today),
+    apiFetch('/api/v1/athlete/' + athleteId + '/activities?oldest=' + d90 + '&newest=' + today),
+    apiFetch('/api/v1/athlete/' + athleteId + '/events?oldest=' + today + '&newest=' + d7ahead),
+  ]).then(function(results) {
+    wellnessData = results[0] || [];
+    activitiesData = results[1] || [];
+    var events = results[2] || [];
+
+    renderMetrics();
+    renderPMC();
+    renderWeeklyMileage();
+    renderTrainingLoad();
+    renderWellness();
+    renderSessions();
+    renderUpcoming(events);
+  }).catch(function(err) {
+    document.getElementById('metricsBar').innerHTML = '<div class="empty-state">Failed to load data: ' + err.message + '</div>';
+  });
+}
+
+// =============================================================================
+// RENDERERS
+// =============================================================================
+function renderMetrics() {
+  // wellness data comes as array, most recent first or sorted by date
+  var sorted = wellnessData.slice().sort(function(a, b) { return b.id.localeCompare(a.id); });
+  var latest = sorted[0] || {};
+  var ctl = latest.ctl || 0;
+  var atl = latest.atl || 0;
+  var tsb = Math.round((ctl - atl) * 10) / 10;
+  var rhr = latest.restingHR || '—';
+  var formColor = tsb > 5 ? 'var(--green)' : tsb > -5 ? 'var(--amber)' : 'var(--red)';
+  var formLabel = tsb > 10 ? 'Fresh' : tsb > 0 ? 'Recovering' : tsb > -10 ? 'Loaded' : 'Fatigued';
+
+  document.getElementById('metricsBar').innerHTML =
+    metric('Fitness', Math.round(ctl * 10) / 10, 'CTL', 'var(--fitness)') +
+    metric('Fatigue', Math.round(atl * 10) / 10, 'ATL', 'var(--fatigue)') +
+    metric('Form', (tsb > 0 ? '+' : '') + tsb, formLabel, formColor) +
+    metric('Resting HR', rhr, 'bpm', 'var(--bright)');
+}
+
+function metric(label, val, unit, color) {
+  return '<div class="metric"><div class="metric-label">' + label + '</div>' +
+    '<span class="metric-value" style="color:' + color + '">' + val + '</span>' +
+    '<span class="metric-unit">' + unit + '</span></div>';
+}
+
+function renderPMC() {
+  var sorted = wellnessData.slice().sort(function(a, b) { return a.id.localeCompare(b.id); });
+  var data = sorted.slice(-pmcDays);
+
+  var labels = data.map(function(w) { return w.id; });
+  var fitness = data.map(function(w) { return w.ctl || 0; });
+  var fatigue = data.map(function(w) { return w.atl || 0; });
+  var form = data.map(function(w) { return (w.ctl || 0) - (w.atl || 0); });
+
+  if (pmcChartInstance) pmcChartInstance.destroy();
+  pmcChartInstance = new Chart(document.getElementById('pmcChart'), {
+    type: 'line',
+    data: {
+      labels: labels,
+      datasets: [
+        { label: 'Fitness', data: fitness, borderColor: '#5DCAA5', borderWidth: 2, pointRadius: 0, tension: 0.3 },
+        { label: 'Fatigue', data: fatigue, borderColor: '#F09575', borderWidth: 2, pointRadius: 0, tension: 0.3 },
+        { label: 'Form', data: form, borderColor: '#85B7EB', borderWidth: 1.5, pointRadius: 0, tension: 0.3, fill: { target: 'origin', above: 'rgba(133,183,235,0.07)', below: 'rgba(133,183,235,0.04)' } },
+      ],
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false }, tooltip: { mode: 'index', intersect: false } },
+      scales: {
+        x: { display: true, ticks: { maxTicksLimit: 8, font: { family: "'JetBrains Mono'", size: 9 }, color: '#6b6f7b' }, grid: { color: '#1e2128' } },
+        y: { ticks: { font: { family: "'JetBrains Mono'", size: 9 }, color: '#6b6f7b' }, grid: { color: '#1e2128' } },
+      },
+    },
+  });
+}
+
+function setPmcRange(days) {
+  pmcDays = days;
+  document.querySelectorAll('.toggle-btn').forEach(function(b) {
+    b.classList.toggle('active', parseInt(b.dataset.days) === days);
+  });
+  renderPMC();
+}
+
+function renderWeeklyMileage() {
+  var runs = activitiesData.filter(function(a) { return a.type === 'Run'; });
+  var weeks = {};
+  runs.forEach(function(a) {
+    var d = (a.start_date_local || a.start_date || '').split('T')[0];
+    var ws = weekOf(d);
+    weeks[ws] = (weeks[ws] || 0) + toMi(a.distance || 0);
+  });
+  var sorted = Object.entries(weeks).sort(function(a, b) { return a[0].localeCompare(b[0]); }).slice(-12);
+
+  var current = sorted.length > 0 ? sorted[sorted.length - 1][1] : 0;
+  var target = 45;
+  var pct = Math.round((current / target) * 100);
+  var color = pct >= 85 ? 'var(--green)' : pct >= 60 ? 'var(--amber)' : 'var(--red)';
+
+  document.getElementById('weekMileageHeader').innerHTML =
+    '<div style="display:flex;align-items:baseline;gap:5px;margin-bottom:3px">' +
+    '<span style="font-size:26px;font-weight:600;font-family:var(--fm);color:' + color + '">' + Math.round(current) + '</span>' +
+    '<span style="font-size:13px;font-family:var(--fm);color:var(--muted)">/ ' + target + ' mi</span></div>' +
+    '<div class="progress-outer"><div class="progress-inner" style="width:' + Math.min(pct, 100) + '%;background:' + color + '"></div></div>' +
+    '<div class="progress-labels"><span>this week</span><span>' + pct + '%</span></div>';
+
+  if (mileageChartInstance) mileageChartInstance.destroy();
+  mileageChartInstance = new Chart(document.getElementById('mileageChart'), {
+    type: 'bar',
+    data: {
+      labels: sorted.map(function(s) { return fmtDate(s[0]); }),
+      datasets: [{ data: sorted.map(function(s) { return Math.round(s[1] * 10) / 10; }), backgroundColor: '#378ADD', borderRadius: 3 }],
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { ticks: { font: { family: "'JetBrains Mono'", size: 8 }, color: '#6b6f7b' }, grid: { display: false } },
+        y: { ticks: { font: { family: "'JetBrains Mono'", size: 8 }, color: '#6b6f7b' }, grid: { color: '#1e2128' } },
+      },
+    },
+  });
+}
+
+function renderTrainingLoad() {
+  var weeks = {};
+  activitiesData.forEach(function(a) {
+    var d = (a.start_date_local || a.start_date || '').split('T')[0];
+    var ws = weekOf(d);
+    if (!weeks[ws]) weeks[ws] = { easy: 0, quality: 0, race: 0, ride: 0 };
+    var c = classify(a);
+    var tl = a.icu_training_load || 0;
+    weeks[ws][c] += tl;
+  });
+  var sorted = Object.entries(weeks).sort(function(a, b) { return a[0].localeCompare(b[0]); }).slice(-12);
+
+  if (loadChartInstance) loadChartInstance.destroy();
+  loadChartInstance = new Chart(document.getElementById('loadChart'), {
+    type: 'bar',
+    data: {
+      labels: sorted.map(function(s) { return fmtDate(s[0]); }),
+      datasets: [
+        { label: 'Easy', data: sorted.map(function(s) { return s[1].easy; }), backgroundColor: '#378ADD' },
+        { label: 'Quality', data: sorted.map(function(s) { return s[1].quality; }), backgroundColor: '#EF9F27' },
+        { label: 'Race', data: sorted.map(function(s) { return s[1].race; }), backgroundColor: '#E24B4A' },
+        { label: 'Ride', data: sorted.map(function(s) { return s[1].ride; }), backgroundColor: '#AFA9EC' },
+      ],
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { stacked: true, ticks: { font: { family: "'JetBrains Mono'", size: 8 }, color: '#6b6f7b' }, grid: { display: false } },
+        y: { stacked: true, ticks: { font: { family: "'JetBrains Mono'", size: 8 }, color: '#6b6f7b' }, grid: { color: '#1e2128' } },
+      },
+    },
+  });
+}
+
+function renderWellness() {
+  var sorted = wellnessData.slice().sort(function(a, b) { return b.id.localeCompare(a.id); });
+  var w14 = sorted.slice(0, 14);
+  var latest = w14[0] || {};
+  var prev = w14[1] || {};
+
+  var rhrData = w14.map(function(w) { return w.restingHR; }).reverse();
+  var sleepData = w14.map(function(w) { return w.sleepSecs ? w.sleepSecs / 3600 : null; }).reverse();
+  var scoreData = w14.map(function(w) { return w.sleepScore; }).reverse();
+
+  function trend(data) {
+    var r = data.slice(-7).filter(function(v) { return v != null; });
+    var o = data.slice(0, 7).filter(function(v) { return v != null; });
+    if (r.length < 2 || o.length < 2) return '<span class="trend-arrow" style="color:var(--muted)">→</span>';
+    var ar = r.reduce(function(a, b) { return a + b; }, 0) / r.length;
+    var ao = o.reduce(function(a, b) { return a + b; }, 0) / o.length;
+    var pct = Math.abs((ar - ao) / (ao || 1)) * 100;
+    if (pct < 3) return '<span class="trend-arrow" style="color:var(--muted)">→</span>';
+    return ar > ao ? '<span class="trend-arrow" style="color:var(--green)">↑</span>' : '<span class="trend-arrow" style="color:var(--red)">↓</span>';
+  }
+
+  function spark(data, color) {
+    var f = data.filter(function(v) { return v != null; });
+    if (f.length < 2) return '';
+    var mn = Math.min.apply(null, f), mx = Math.max.apply(null, f), r = mx - mn || 1;
+    var pts = f.map(function(v, i) {
+      return ((i / (f.length - 1)) * 110) + ',' + (28 - ((v - mn) / r) * 24 - 2);
+    }).join(' ');
+    return '<svg width="110" height="28"><polyline points="' + pts + '" fill="none" stroke="' + color + '" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  }
+
+  var sleepHrs = prev.sleepSecs ? (prev.sleepSecs / 3600).toFixed(1) : '—';
+
+  document.getElementById('wellnessRow').innerHTML =
+    wellnessItem('Resting HR', (latest.restingHR || '—'), 'bpm', trend(rhrData), spark(rhrData, '#F09575')) +
+    wellnessItem('Sleep', sleepHrs, 'hrs', trend(sleepData), spark(sleepData, '#85B7EB')) +
+    wellnessItem('Sleep score', (prev.sleepScore || '—'), '', trend(scoreData), spark(scoreData, '#EF9F27'));
+}
+
+function wellnessItem(label, val, unit, trendHtml, sparkHtml) {
+  return '<div class="wellness-item">' +
+    '<div class="wellness-header"><span class="wellness-label">' + label + '</span>' + trendHtml + '</div>' +
+    '<div class="wellness-value">' + val + (unit ? '<span class="wellness-unit">' + unit + '</span>' : '') + '</div>' +
+    sparkHtml + '</div>';
+}
+
+function renderSessions() {
+  var sorted = activitiesData.slice().sort(function(a, b) {
+    return (b.start_date_local || b.start_date || '').localeCompare(a.start_date_local || a.start_date || '');
+  });
+  var recent = sorted.slice(0, 10);
+
+  if (recent.length === 0) {
+    document.getElementById('sessionsContainer').innerHTML = '<div class="empty-state">No recent activities</div>';
+    return;
+  }
+
+  var html = '';
+  recent.forEach(function(a) {
+    var c = classify(a);
+    var color = classColor(c);
+    var d = (a.start_date_local || a.start_date || '').split('T')[0];
+    var miles = toMi(a.distance || 0);
+    var isRun = a.type === 'Run';
+    var tl = a.icu_training_load || 0;
+    var hr = a.average_heartrate || 0;
+    var el = a.total_elevation_gain || 0;
+
+    var meta = miles.toFixed(1) + ' mi · ' + fmtDur(a.moving_time || a.elapsed_time || 0);
+    if (isRun && a.distance > 0 && a.moving_time > 0) meta += ' · ' + fmtPace(a.moving_time, a.distance) + ' /mi';
+    if (hr) meta += ' · ' + Math.round(hr) + ' bpm';
+    if (tl) meta += ' · ' + tl + ' load';
+
+    html += '<div class="session-card" style="background:' + color + '09;border-left-color:' + color + '">' +
+      '<div style="flex:1"><div class="session-name">' + (a.name || 'Activity') + '</div>' +
+      '<div class="session-meta">' + meta + '</div></div>' +
+      '<div class="session-date"><div>' + fmtDay(d) + '</div><div>' + fmtDate(d) + '</div></div></div>';
+  });
+  document.getElementById('sessionsContainer').innerHTML = html;
+}
+
+function renderUpcoming(events) {
+  var workouts = events.filter(function(e) { return e.category === 'WORKOUT'; });
+  if (workouts.length === 0) {
+    document.getElementById('upcomingContainer').innerHTML = '<div class="empty-state">No planned workouts</div>';
+    return;
+  }
+  var html = '';
+  workouts.forEach(function(e) {
+    var d = (e.start_date_local || e.start_date || '').split('T')[0];
+    html += '<div class="session-card" style="background:rgba(93,202,165,0.05);border-left-color:var(--fitness)">' +
+      '<div style="flex:1"><div class="session-name">' + (e.name || 'Workout') + '</div>' +
+      '<div class="session-meta">' + (e.description || '').substring(0, 80) + '</div></div>' +
+      '<div class="session-date"><div>' + fmtDay(d) + '</div><div>' + fmtDate(d) + '</div></div></div>';
+  });
+  document.getElementById('upcomingContainer').innerHTML = html;
+}
+
+// =============================================================================
+// INIT
+// =============================================================================
+checkSavedLogin();
+</script>
+</body>
+</html>
