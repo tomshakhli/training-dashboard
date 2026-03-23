@@ -1,4 +1,4 @@
-const ORIGINS = ['https://tomshakhli.github.io','http://localhost:3000','http://localhost:5173','null'];
+const ORIGINS = ['https://tomshakhli.github.io','http://localhost:3000','http://localhost:5173','http://127.0.0.1:5500','null'];
 const BASE = 'https://intervals.icu';
 
 function corsHeaders(origin) {
@@ -22,14 +22,6 @@ export default {
     }
 
     const url = new URL(request.url);
-
-    if (url.pathname === '/debug') {
-      const body = await request.text();
-      return new Response(JSON.stringify({ method: request.method, bodyLength: body.length, body: body }), {
-        headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': origin }
-      });
-    }
-
     const target = BASE + url.pathname + url.search;
 
     let body = null;
@@ -37,32 +29,29 @@ export default {
       body = await request.arrayBuffer();
     }
 
-    const newHeaders = new Headers();
+    const h = new Headers();
     const auth = request.headers.get('Authorization');
-    if (auth) newHeaders.set('Authorization', auth);
+    if (auth) h.set('Authorization', auth);
     if (body && body.byteLength > 0) {
-      newHeaders.set('Content-Type', 'application/json');
-      newHeaders.set('Content-Length', body.byteLength.toString());
+      h.set('Content-Type', 'application/json');
+      h.set('Content-Length', body.byteLength.toString());
     }
-    newHeaders.set('Accept', 'application/json');
+    h.set('Accept', 'application/json');
 
     try {
       const resp = await fetch(target, {
         method: request.method,
-        headers: newHeaders,
+        headers: h,
         body: body && body.byteLength > 0 ? body : undefined
       });
       const respBody = await resp.text();
-      const responseHeaders = new Headers();
-      responseHeaders.set('Access-Control-Allow-Origin', origin);
-      responseHeaders.set('Access-Control-Allow-Credentials', 'true');
-      responseHeaders.set('Content-Type', resp.headers.get('Content-Type') || 'application/json');
-      return new Response(respBody, { status: resp.status, headers: responseHeaders });
+      const rh = new Headers();
+      rh.set('Access-Control-Allow-Origin', origin);
+      rh.set('Access-Control-Allow-Credentials', 'true');
+      rh.set('Content-Type', resp.headers.get('Content-Type') || 'application/json');
+      return new Response(respBody, { status: resp.status, headers: rh });
     } catch (e) {
-      return new Response(JSON.stringify({ error: e.message }), {
-        status: 502,
-        headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': origin }
-      });
+      return new Response(e.message, { status: 502, headers: { 'Access-Control-Allow-Origin': origin } });
     }
   }
 };
