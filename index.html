@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Training Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-adapter-date-fns/3.0.0/chartjs-adapter-date-fns.bundle.min.js"></script>
+<style>
+:root {
+  --bg: #0f1117; --card: #1a1d24; --border: #2a2d35; --grid: #1e2128;
+  --text: #c8cad0; --muted: #6b6f7b; --bright: #f0f0f2; --white: #fff;
+  --fitness: #5DCAA5; --fatigue: #F09575; --form: #85B7EB;
+  --easy: #378ADD; --quality: #EF9F27; --race: #E24B4A; --ride: #AFA9EC;
+  --green: #5DCAA5; --amber: #EF9F27; --red: #E24B4A;
+  --fm: 'JetBrains Mono', monospace; --fs: 'DM Sans', sans-serif;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: var(--fs); min-height: 100vh; }
+
+/* LOGIN */
+.login-screen { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; }
+.login-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 32px; width: 100%; max-width: 400px; }
+.login-card h1 { font-size: 20px; font-weight: 600; color: var(--white); margin-bottom: 4px; }
+.login-card p { font-size: 13px; color: var(--muted); margin-bottom: 20px; }
+.login-card label { display: block; font-size: 11px; font-family: var(--fm); color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 4px; margin-top: 12px; }
+.login-card input { width: 100%; padding: 8px 12px; background: var(--bg); border: 1px solid var(--border); border-radius: 6px; color: var(--bright); font-family: var(--fm); font-size: 13px; outline: none; }
+.login-card input:focus { border-color: var(--fitness); }
+.login-card button { width: 100%; margin-top: 20px; padding: 10px; background: var(--fitness); color: var(--bg); border: none; border-radius: 6px; font-family: var(--fs); font-weight: 600; font-size: 14px; cursor: pointer; }
+.login-card button:hover { opacity: 0.9; }
+.login-card button:disabled { opacity: 0.5; cursor: not-allowed; }
+.login-error { color: var(--red); font-size: 12px; margin-top: 8px; font-family: var(--fm); }
+.remember-row { display: flex; align-items: center; gap: 6px; margin-top: 12px; font-size: 12px; color: var(--muted); }
+.remember-row input[type=checkbox] { accent-color: var(--fitness); }
+.proxy-note { font-size: 11px; color: var(--muted); margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--border); line-height: 1.5; }
+.proxy-note code { background: var(--bg); padding: 1px 4px; border-radius: 3px; font-family: var(--fm); font-size: 10px; }
+
+/* DASHBOARD */
+.dashboard { padding: 0 16px 40px; max-width: 1200px; margin: 0 auto; display: none; }
+.header { padding: 20px 0 14px; border-bottom: 1px solid var(--border); margin-bottom: 16px; }
+.header-top { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 8px; }
+.athlete-name { font-size: 20px; font-weight: 600; color: var(--white); letter-spacing: -0.02em; }
+.phase-tag { padding: 3px 10px; font-size: 10px; font-family: var(--fm); letter-spacing: 0.06em; text-transform: uppercase; background: rgba(93,202,165,0.08); color: var(--fitness); border-radius: 4px; border: 1px solid rgba(93,202,165,0.15); margin-left: 10px; }
+.date-label { font-size: 12px; color: var(--muted); font-family: var(--fm); }
+.race-badges { display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap; }
+.race-badge { display: inline-flex; align-items: center; gap: 8px; padding: 5px 12px; border-radius: 6px; }
+.race-badge.upcoming { background: rgba(226,75,74,0.07); border: 1px solid rgba(226,75,74,0.13); }
+.race-badge.completed { background: rgba(239,159,39,0.06); border: 1px solid rgba(239,159,39,0.12); }
+.race-days { font-family: var(--fm); font-size: 14px; font-weight: 600; }
+.race-label { font-size: 12px; color: var(--muted); }
+
+.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.grid-full { grid-column: 1 / -1; }
+.card { background: var(--card); border-radius: 10px; padding: 14px 18px; border: 1px solid var(--border); }
+.card-title { font-size: 10px; font-family: var(--fm); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+.metrics-bar { display: flex; gap: 16px; flex-wrap: wrap; }
+.metric { flex: 1; min-width: 100px; }
+.metric-label { font-size: 10px; font-family: var(--fm); color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 2px; }
+.metric-value { font-size: 22px; font-weight: 600; font-family: var(--fm); }
+.metric-unit { font-size: 11px; color: var(--muted); margin-left: 6px; }
+
+.chart-container { position: relative; width: 100%; }
+.toggle-row { display: flex; gap: 3px; }
+.toggle-btn { padding: 2px 8px; font-size: 10px; font-family: var(--fm); border: 1px solid var(--border); background: transparent; color: var(--muted); border-radius: 4px; cursor: pointer; }
+.toggle-btn.active { border-color: var(--fitness); background: rgba(93,202,165,0.09); color: var(--fitness); }
+.legend-row { display: flex; gap: 14px; margin-bottom: 6px; font-size: 11px; font-family: var(--fm); color: var(--muted); }
+.legend-dot { width: 7px; height: 7px; border-radius: 2px; display: inline-block; margin-right: 4px; vertical-align: middle; }
+
+.progress-outer { height: 5px; background: rgba(107,111,123,0.09); border-radius: 3px; overflow: hidden; margin-bottom: 2px; }
+.progress-inner { height: 100%; border-radius: 3px; transition: width 0.5s; }
+.progress-labels { display: flex; justify-content: space-between; font-size: 10px; font-family: var(--fm); color: var(--muted); margin-bottom: 12px; }
+
+.wellness-row { display: flex; gap: 12px; flex-wrap: wrap; }
+.wellness-item { flex: 1; min-width: 130px; padding: 10px 12px; background: var(--bg); border-radius: 8px; }
+.wellness-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 3px; }
+.wellness-label { font-size: 10px; font-family: var(--fm); color: var(--muted); }
+.wellness-value { font-size: 18px; font-weight: 600; font-family: var(--fm); color: var(--bright); margin-bottom: 5px; }
+.wellness-unit { font-size: 11px; color: var(--muted); margin-left: 4px; font-weight: 400; }
+.trend-arrow { font-family: var(--fm); font-size: 12px; }
+
+.session-card { display: flex; gap: 10px; padding: 8px 12px; border-radius: 7px; cursor: pointer; margin-bottom: 5px; border-left: 3px solid transparent; }
+.session-name { font-size: 13px; font-weight: 500; color: var(--bright); margin-bottom: 1px; }
+.session-meta { font-size: 11px; font-family: var(--fm); color: var(--muted); }
+.session-date { font-size: 10px; font-family: var(--fm); color: var(--muted); text-align: right; min-width: 40px; }
+.session-extra { margin-top: 4px; font-size: 11px; font-family: var(--fm); color: var(--muted); }
+
+.empty-state { color: var(--muted); font-size: 12px; font-family: var(--fm); text-align: center; padding: 16px; }
+.loading { color: var(--muted); font-size: 13px; font-family: var(--fm); text-align: center; padding: 40px; }
+.loading-spinner { display: inline-block; width: 20px; height: 20px; border: 2px solid var(--border); border-top-color: var(--fitness); border-radius: 50%; animation: spin 0.8s linear infinite; margin-bottom: 8px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.logout-btn { background: none; border: 1px solid var(--border); color: var(--muted); padding: 3px 10px; font-size: 10px; font-family: var(--fm); border-radius: 4px; cursor: pointer; }
+.logout-btn:hover { color: var(--bright); border-color: var(--muted); }
+
+/* PLAN */
+.plan-card { background: var(--card); border-radius: 10px; padding: 14px 18px; border: 1px solid var(--border); border-left: 3px solid var(--fitness); }
+.plan-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; position: sticky; top: 0; z-index: 1; }
+.plan-scroll { max-height: 600px; overflow-y: auto; scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
+.plan-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.plan-week { font-size: 10px; font-family: var(--fm); letter-spacing: 0.06em; text-transform: uppercase; color: var(--fitness); }
+.plan-push-all { background: none; border: 1px solid var(--fitness); color: var(--fitness); padding: 4px 12px; font-size: 10px; font-family: var(--fm); border-radius: 4px; cursor: pointer; }
+.plan-push-all:hover { background: rgba(93,202,165,0.1); }
+.plan-item { display: flex; gap: 10px; padding: 8px 12px; border-radius: 7px; margin-bottom: 5px; background: rgba(93,202,165,0.04); align-items: flex-start; }
+.plan-item.rest { background: rgba(107,111,123,0.06); }
+.plan-item.quality { background: rgba(239,159,39,0.06); }
+.plan-item.race { background: rgba(226,75,74,0.06); }
+.plan-item.ride { background: rgba(175,169,236,0.06); }
+.plan-day { min-width: 55px; font-size: 10px; font-family: var(--fm); color: var(--muted); padding-top: 2px; }
+.plan-day-name { color: var(--bright); font-weight: 500; font-size: 11px; }
+.plan-details { flex: 1; }
+.plan-name { font-size: 13px; font-weight: 500; color: var(--bright); margin-bottom: 2px; }
+.plan-desc { font-size: 11px; font-family: var(--fm); color: var(--muted); line-height: 1.5; white-space: pre-line; }
+.plan-push-btn { background: none; border: 1px solid var(--border); color: var(--muted); padding: 3px 8px; font-size: 9px; font-family: var(--fm); border-radius: 3px; cursor: pointer; white-space: nowrap; margin-top: 2px; }
+.plan-push-btn:hover { border-color: var(--fitness); color: var(--fitness); }
+.plan-push-btn.pushed { border-color: var(--green); color: var(--green); cursor: default; }
+.plan-push-btn.error { border-color: var(--red); color: var(--red); }
+
+@media (max-width: 700px) {
+  .grid { grid-template-columns: 1fr; }
+  .metrics-bar { flex-direction: column; gap: 8px; }
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN SCREEN -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-card">
+    <h1>Training Dashboard</h1>
+    <p>Connect to your Intervals.icu account</p>
+    <label>Athlete ID</label>
+    <input type="text" id="athleteId" placeholder="e.g. i344297" autocomplete="username">
+    <label>API Key</label>
+    <input type="password" id="apiKey" placeholder="Your Intervals.icu API key" autocomplete="current-password">
+    <div class="remember-row">
+      <input type="checkbox" id="rememberMe">
+      <label for="rememberMe">Remember me (stored in localStorage)</label>
+    </div>
+    <button id="loginBtn" onclick="doLogin()">Connect</button>
+    <div class="login-error" id="loginError"></div>
+    <div style="text-align:center;margin-top:14px;padding-top:14px;border-top:1px solid var(--border)">
+      <button onclick="loadDemo()" style="background:none;border:1px solid var(--border);color:var(--muted);padding:8px 20px;border-radius:6px;font-family:var(--fs);font-size:13px;cursor:pointer">View demo</button>
+      <div style="font-size:11px;color:var(--muted);margin-top:6px">See the dashboard with sample data — no login needed</div>
+    </div>
+    <div class="proxy-note">
+      Connects to Intervals.icu via a secure proxy. Your credentials are sent directly
+      to the Intervals.icu API — nothing is stored on any server.
+    </div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div class="dashboard" id="dashboard">
+  <!-- Header -->
+  <div class="header">
+    <div class="header-top">
+      <div>
+        <span class="athlete-name" id="athleteName">—</span>
+        <span class="phase-tag">HM build — specific</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <span class="date-label" id="dateLabel"></span>
+        <button class="logout-btn" onclick="doLogout()">Logout</button>
+      </div>
+    </div>
+    <div class="race-badges" id="raceBadges"></div>
+  </div>
+
+  <div class="grid">
+    <!-- Race predictor + Status overview (athlete-specific) -->
+    <div id="coachPanels" style="display:none;grid-column:1/-1">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+        <div class="card" style="border-left:3px solid var(--amber)">
+          <div class="card-title">On track for</div>
+          <div style="display:flex;flex-direction:column;gap:14px">
+            <div>
+              <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:2px">
+                <span style="font-size:11px;font-family:var(--fm);color:var(--race);letter-spacing:0.06em;text-transform:uppercase">Half marathon</span>
+                <span style="font-size:10px;color:var(--muted);font-family:var(--fm)">Bristol · 10 May</span>
+              </div>
+              <div style="display:flex;align-items:baseline;gap:6px">
+                <span style="font-size:26px;font-weight:600;font-family:var(--fm);color:var(--bright)">1:14:30–1:15:30</span>
+                <span style="font-size:11px;color:var(--green);font-family:var(--fm)">target 1:14:59 ✓</span>
+              </div>
+              <div style="font-size:11px;color:var(--muted);margin-top:4px;line-height:1.5">Paddock Wood 1:17:34 on a hilly course as practice race. 4×2k reps at 5:35/mi (103% RP) handled comfortably. Flat Bristol course + 7 weeks of specific work puts the target within reach. The 6×2k session in week 4 will be the key fitness confirmation.</div>
+            </div>
+            <div style="border-top:1px solid var(--border);padding-top:12px">
+              <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:2px">
+                <span style="font-size:11px;font-family:var(--fm);color:var(--quality);letter-spacing:0.06em;text-transform:uppercase">5km</span>
+                <span style="font-size:10px;color:var(--muted);font-family:var(--fm)">Summer target · Jun–Aug</span>
+              </div>
+              <div style="display:flex;align-items:baseline;gap:6px">
+                <span style="font-size:26px;font-weight:600;font-family:var(--fm);color:var(--bright)">15:45–16:00</span>
+                <span style="font-size:11px;color:var(--green);font-family:var(--fm)">target sub-16 ✓</span>
+              </div>
+              <div style="font-size:11px;color:var(--muted);margin-top:4px;line-height:1.5">PB 16:11 set during marathon training with no 5k work. Burgess parkrun 16:59 in late Feb untapered on a slow course. The HM block is building a bigger aerobic engine — with dedicated 5k speed work over summer at Battersea, sub-16 is realistic.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="border-left:3px solid var(--form)">
+          <div class="card-title">Status — last 30 days</div>
+          <div id="statusNarrative" style="font-size:12px;color:var(--text);line-height:1.6">
+            <div class="loading"><div class="loading-spinner"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Metrics bar -->
+    <div class="card grid-full">
+      <div class="metrics-bar" id="metricsBar">
+        <div class="loading"><div class="loading-spinner"></div><br>Loading...</div>
+      </div>
+    </div>
+
+    <!-- PMC Chart -->
+    <div class="card grid-full">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+        <span class="card-title">Performance management chart</span>
+        <div class="toggle-row">
+          <button class="toggle-btn" data-days="30" onclick="setPmcRange(30)">30d</button>
+          <button class="toggle-btn" data-days="60" onclick="setPmcRange(60)">60d</button>
+          <button class="toggle-btn active" data-days="90" onclick="setPmcRange(90)">90d</button>
+        </div>
+      </div>
+      <div class="legend-row">
+        <span><span class="legend-dot" style="background:var(--fitness)"></span>Fitness</span>
+        <span><span class="legend-dot" style="background:var(--fatigue)"></span>Fatigue</span>
+        <span><span class="legend-dot" style="background:var(--form)"></span>Form</span>
+      </div>
+      <div class="chart-container" style="height:200px"><canvas id="pmcChart"></canvas></div>
+    </div>
+
+    <!-- Weekly mileage -->
+    <div class="card">
+      <div class="card-title">Weekly running mileage</div>
+      <div id="weekMileageHeader"></div>
+      <div class="chart-container" style="height:100px"><canvas id="mileageChart"></canvas></div>
+    </div>
+
+    <!-- Training load -->
+    <div class="card">
+      <div class="card-title">Weekly training load</div>
+      <div class="legend-row" style="font-size:10px">
+        <span><span class="legend-dot" style="background:var(--easy)"></span>Easy</span>
+        <span><span class="legend-dot" style="background:var(--quality)"></span>Quality</span>
+        <span><span class="legend-dot" style="background:var(--race)"></span>Race</span>
+        <span><span class="legend-dot" style="background:var(--ride)"></span>Ride</span>
+      </div>
+      <div class="chart-container" style="height:130px"><canvas id="loadChart"></canvas></div>
+    </div>
+
+    <!-- Wellness -->
+    <div class="card grid-full">
+      <div class="card-title">Wellness — 14 day trends</div>
+      <div class="wellness-row" id="wellnessRow">
+        <div class="loading"><div class="loading-spinner"></div></div>
+      </div>
+    </div>
+
+    <!-- Recent sessions -->
+    <div class="card grid-full">
+      <div class="card-title">Recent sessions</div>
+      <div class="legend-row" style="font-size:10px;margin-bottom:8px">
+        <span><span class="legend-dot" style="background:var(--easy)"></span>Easy</span>
+        <span><span class="legend-dot" style="background:var(--quality)"></span>Quality</span>
+        <span><span class="legend-dot" style="background:var(--race)"></span>Race</span>
+        <span><span class="legend-dot" style="background:var(--ride)"></span>Ride</span>
+      </div>
+      <div id="sessionsContainer">
+        <div class="loading"><div class="loading-spinner"></div></div>
+      </div>
+    </div>
+
+    <!-- Training plan (from Intervals.icu calendar) -->
+    <div class="card grid-full plan-card">
+      <div class="plan-header">
+        <span class="plan-week" id="planTitle">Training plan</span>
+      </div>
+      <div id="planContainer" class="plan-scroll">
+        <div class="loading"><div class="loading-spinner"></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// =============================================================================
+// CONFIG — Update PROXY_BASE with your deployed Cloudflare Worker URL
+// =============================================================================
+const PROXY_BASE = 'https://intervals-proxy.tomshakhli.workers.dev';
+
+// Race config — hardcoded per spec (Phase 5 makes these configurable)
+const RACES = [
+  { name: 'Bristol Half Marathon', date: '2026-05-10', target: '~1:14:59' },
+];
+
+// =============================================================================
+// COACH NOTES — Updated in Claude conversations, committed to repo
+// =============================================================================
+const COACH_NOTE = 'Returning from a sore throat over the weekend — lost Fri-Mon to illness. Resting HR stayed at 41 bpm so no systemic impact, but sleep quality tanked (scores of 55-68 vs usual 80+). Back to easy running Tuesday, with the key 5×2k session on Thursday if you\'re feeling 100%. CTL has dipped from 42 to 37.7 post-Paddock Wood — expected after the race + lighter week + illness. The priority this week is getting back on the horse without forcing it. The fitness bank is deep enough that a few days off costs nothing.';
+const COACH_DATE = '23 Mar 2026';
+
+// =============================================================================
+// PRESCRIBED PLAN — Full Bristol HM build, updated by coach in Claude
+// Paces: 100% RP = 5:44/mi | 97% = 5:35 | 95% = 6:02 | 92% = 6:14
+//        90% = 6:23 | 87.5% = 6:33 | 105% = 5:27
+// =============================================================================
+const PLAN_TITLE = 'Bristol Half Marathon Build — 7 weeks to race day';
+const PLAN = [
+  // ===================== WEEK 1: 23-29 Mar — Return from illness =====================
+  {date:'2026-03-23',day:'Mon',type:'rest',name:'Rest',week:'Wk1 — Return from illness',
+   desc:'Full rest. Recovering from sore throat.\nFocus on sleep and hydration.',category:'NOTE'},
+  {date:'2026-03-24',day:'Tue',type:'easy',name:'Easy run',week:'Wk1 — Return from illness',
+   desc:'Return-to-running test. Easy 6-7 miles.\nMonitor HR — if 10+ bpm above normal, cut short.',
+   category:'WORKOUT',eventType:'Run',distance:10460,duration:3300},
+  {date:'2026-03-25',day:'Wed',type:'easy',name:'Easy + strides',week:'Wk1 — Return from illness',
+   desc:'Easy 7 miles + 4-5 strides at the end.\n20sec each, smooth, full walk-back recovery.',
+   category:'WORKOUT',eventType:'Run',distance:11265,duration:3600},
+  {date:'2026-03-26',day:'Thu',type:'quality',name:'5×2k @ 5:35/mi',week:'Wk1 — Return from illness',
+   desc:'WU: 2mi easy\n5 × 2000m @ 5:35/mi (3:28/km) — 3 min jog recovery\n103% RP — building on last week\'s 4×2k\nCD: 1.5mi easy | Total: ~10.5mi\n\nStart rep 1 at 5:37, settle into 5:35 from rep 2.',
+   workout:'Warm up\n- 2mi easy\n\nMain set 5x\n- 2km 5:35/mi Pace\n- 0.4km easy recovery\n\nCool down\n- 1.5mi easy',
+   category:'WORKOUT',eventType:'Run',distance:16900,duration:4200,load:65},
+  {date:'2026-03-27',day:'Fri',type:'ride',name:'Turbo / MyWhoosh',week:'Wk1 — Return from illness',
+   desc:'Bike session — whatever structure you fancy.\nKeeps engine ticking without running impact.',
+   category:'WORKOUT',eventType:'VirtualRide'},
+  {date:'2026-03-28',day:'Sat',type:'easy',name:'Easy run',week:'Wk1 — Return from illness',
+   desc:'Easy 6-7 miles. Recovery pace.',
+   category:'WORKOUT',eventType:'Run',distance:10460,duration:3300},
+  {date:'2026-03-29',day:'Sun',type:'quality',name:'Long run + fundamental finish',week:'Wk1 — Return from illness',
+   desc:'12-13 miles total.\nFirst 9-10mi easy\nFinal 3mi at ~6:33/mi (87.5% RP)\n\nLet the pace shift happen naturally.',
+   workout:'Easy long run\n- 10mi easy\n\nFundamental pace finish\n- 3mi 6:33/mi Pace',
+   category:'WORKOUT',eventType:'Run',distance:20920,duration:6000,load:55},
+
+  // ===================== WEEK 2: 30 Mar - 5 Apr — Rebuild volume =====================
+  {date:'2026-03-30',day:'Mon',type:'easy',name:'Easy run',week:'Wk2 — Rebuild volume',
+   desc:'8 miles easy. Rebuilding running volume.',
+   category:'WORKOUT',eventType:'Run',distance:12875,duration:4000},
+  {date:'2026-03-31',day:'Tue',type:'easy',name:'Easy run',week:'Wk2 — Rebuild volume',
+   desc:'7 miles easy.',
+   category:'WORKOUT',eventType:'Run',distance:11265,duration:3500},
+  {date:'2026-04-01',day:'Wed',type:'quality',name:'4×3k sub-threshold',week:'Wk2 — Rebuild volume',
+   desc:'WU: 2mi easy\n4 × 3000m sub-threshold — by effort/HR (86-91% max HR)\n90sec jog recovery\nCD: 1.5mi easy | Total: ~11mi\n\nNorwegian Singles. Run by feel, not pace.\nExpect ~6:00-6:10/mi at this effort.',
+   workout:'Warm up\n- 2mi easy\n\nMain set 4x\n- 3km 6:05-5:55/mi Pace\n- 0.2km easy recovery\n\nCool down\n- 1.5mi easy',
+   category:'WORKOUT',eventType:'Run',distance:17700,duration:4500,load:55},
+  {date:'2026-04-02',day:'Thu',type:'easy',name:'Easy run',week:'Wk2 — Rebuild volume',
+   desc:'7 miles easy.',
+   category:'WORKOUT',eventType:'Run',distance:11265,duration:3500},
+  {date:'2026-04-03',day:'Fri',type:'easy',name:'Easy run',week:'Wk2 — Rebuild volume',
+   desc:'7 miles easy.',
+   category:'WORKOUT',eventType:'Run',distance:11265,duration:3500},
+  {date:'2026-04-04',day:'Sat',type:'quality',name:'5-mile tempo @ 6:23/mi',week:'Wk2 — Rebuild volume',
+   desc:'WU: 2mi easy\n5 miles continuous tempo @ 6:23/mi (90% RP)\nCD: 1.5mi easy | Total: ~8.5mi\n\nControlled, smooth, no surging.\nBuilding sustained running at HM-support pace.',
+   workout:'Warm up\n- 2mi easy\n\nTempo\n- 5mi 6:23/mi Pace\n\nCool down\n- 1.5mi easy',
+   category:'WORKOUT',eventType:'Run',distance:13680,duration:3900,load:50},
+  {date:'2026-04-05',day:'Sun',type:'easy',name:'Long run easy',week:'Wk2 — Rebuild volume',
+   desc:'13-14 miles. All easy.\nRebuilding the long run after illness break.',
+   category:'WORKOUT',eventType:'Run',distance:21725,duration:6600,load:45},
+
+  // ===================== WEEK 3: 6-12 Apr — Specific introduction =====================
+  {date:'2026-04-06',day:'Mon',type:'easy',name:'Easy run',week:'Wk3 — Specific introduction',
+   desc:'7 miles easy.',
+   category:'WORKOUT',eventType:'Run',distance:11265,duration:3500},
+  {date:'2026-04-07',day:'Tue',type:'easy',name:'Easy run',week:'Wk3 — Specific introduction',
+   desc:'7 miles easy.',
+   category:'WORKOUT',eventType:'Run',distance:11265,duration:3500},
+  {date:'2026-04-08',day:'Wed',type:'quality',name:'5×2k @ 5:35/mi',week:'Wk3 — Specific introduction',
+   desc:'WU: 2mi easy\n5 × 2000m @ 5:35/mi (3:28/km) — 3 min jog recovery\n103% RP\nCD: 1.5mi easy | Total: ~10.5mi\n\nRepeating this session — aim for more comfort at same pace.',
+   workout:'Warm up\n- 2mi easy\n\nMain set 5x\n- 2km 5:35/mi Pace\n- 0.4km easy recovery\n\nCool down\n- 1.5mi easy',
+   category:'WORKOUT',eventType:'Run',distance:16900,duration:4200,load:65},
+  {date:'2026-04-09',day:'Thu',type:'easy',name:'Easy run',week:'Wk3 — Specific introduction',
+   desc:'7 miles easy.',
+   category:'WORKOUT',eventType:'Run',distance:11265,duration:3500},
+  {date:'2026-04-10',day:'Fri',type:'easy',name:'Easy run',week:'Wk3 — Specific introduction',
+   desc:'7 miles easy.',
+   category:'WORKOUT',eventType:'Run',distance:11265,duration:3500},
+  {date:'2026-04-11',day:'Sat',type:'quality',name:'6-mile tempo @ 6:14/mi',week:'Wk3 — Specific introduction',
+   desc:'WU: 2mi easy\n6 miles continuous tempo @ 6:14/mi (92% RP)\nCD: 1.5mi easy | Total: ~9.5mi\n\nProgression from last week\'s 5-mile tempo.\nCloser to race pace, longer duration.',
+   workout:'Warm up\n- 2mi easy\n\nTempo\n- 6mi 6:14/mi Pace\n\nCool down\n- 1.5mi easy',
+   category:'WORKOUT',eventType:'Run',distance:15290,duration:4200,load:55},
+  {date:'2026-04-12',day:'Sun',type:'quality',name:'Long run + HM-pace finish',week:'Wk3 — Specific introduction',
+   desc:'14 miles total.\nFirst 10mi easy\nFinal 4mi at ~6:14/mi (92% RP)\n\nCanova progression long run.\nThe finish should feel purposeful but controlled.',
+   workout:'Easy long run\n- 10mi easy\n\nHM-pace finish\n- 4mi 6:14/mi Pace',
+   category:'WORKOUT',eventType:'Run',distance:22530,duration:6600,load:60},
+
+  // ===================== WEEK 4: 13-19 Apr — Peak specific =====================
+  {date:'2026-04-13',day:'Mon',type:'easy',name:'Easy run',week:'Wk4 — Peak specific',
+   desc:'7 miles easy.',
+   category:'WORKOUT',eventType:'Run',distance:11265,duration:3500},
+  {date:'2026-04-14',day:'Tue',type:'easy',name:'Easy run',week:'Wk4 — Peak specific',
+   desc:'7 miles easy.',
+   category:'WORKOUT',eventType:'Run',distance:11265,duration:3500},
+  {date:'2026-04-15',day:'Wed',type:'quality',name:'6×2k @ 5:35/mi',week:'Wk4 — Peak specific',
+   desc:'WU: 2mi easy\n6 × 2000m @ 5:35/mi (3:28/km) — 3 min jog recovery\n103% RP — volume extension, 6th rep added\nCD: 1.5mi easy | Total: ~11.5mi\n\nBiggest race-pace session of the block.\nDiscipline on reps 5-6: hold pace, don\'t surge.',
+   workout:'Warm up\n- 2mi easy\n\nMain set 6x\n- 2km 5:35/mi Pace\n- 0.4km easy recovery\n\nCool down\n- 1.5mi easy',
+   category:'WORKOUT',eventType:'Run',distance:18500,duration:4500,load:75},
+  {date:'2026-04-16',day:'Thu',type:'easy',name:'Easy run',week:'Wk4 — Peak specific',
+   desc:'7 miles easy.',
+   category:'WORKOUT',eventType:'Run',distance:11265,duration:3500},
+  {date:'2026-04-17',day:'Fri',type:'easy',name:'Easy run',week:'Wk4 — Peak specific',
+   desc:'7 miles easy.',
+   category:'WORKOUT',eventType:'Run',distance:11265,duration:3500},
+  {date:'2026-04-18',day:'Sat',type:'quality',name:'8-mile tempo @ 6:23/mi',week:'Wk4 — Peak specific',
+   desc:'WU: 1.5mi easy\n8 miles continuous @ 6:23/mi (90% RP)\nCD: 1.5mi easy | Total: ~11mi\n\nLongest tempo of the block.\nSmooth and even — no positive splitting.\nThis is the endurance backbone for Bristol.',
+   workout:'Warm up\n- 1.5mi easy\n\nTempo\n- 8mi 6:23/mi Pace\n\nCool down\n- 1.5mi easy',
+   category:'WORKOUT',eventType:'Run',distance:17700,duration:5100,load:65},
+  {date:'2026-04-19',day:'Sun',type:'easy',name:'Long run easy',week:'Wk4 — Peak specific',
+   desc:'14-15 miles. All easy.\nRecovering from a big quality week.\nNo pace targets, just time on feet.',
+   category:'WORKOUT',eventType:'Run',distance:23335,duration:7200,load:50},
+
+  // ===================== WEEK 5: 20-26 Apr — Sharpen + parkrun =====================
+  {date:'2026-04-20',day:'Mon',type:'easy',name:'Easy run',week:'Wk5 — Sharpen + parkrun',
+   desc:'7 miles easy.',
+   category:'WORKOUT',eventType:'Run',distance:11265,duration:3500},
+  {date:'2026-04-21',day:'Tue',type:'quality',name:'4×2k @ 5:35/mi',week:'Wk5 — Sharpen + parkrun',
+   desc:'WU: 2mi easy\n4 × 2000m @ 5:35/mi — 3 min jog recovery\nReduced volume from last week\'s 6 reps.\nMaintaining sharpness, not building.\nCD: 1.5mi easy | Total: ~9.5mi',
+   workout:'Warm up\n- 2mi easy\n\nMain set 4x\n- 2km 5:35/mi Pace\n- 0.4km easy recovery\n\nCool down\n- 1.5mi easy',
+   category:'WORKOUT',eventType:'Run',distance:15290,duration:3900,load:55},
+  {date:'2026-04-22',day:'Wed',type:'easy',name:'Easy run',week:'Wk5 — Sharpen + parkrun',
+   desc:'7 miles easy.',
+   category:'WORKOUT',eventType:'Run',distance:11265,duration:3500},
+  {date:'2026-04-23',day:'Thu',type:'easy',name:'Easy run',week:'Wk5 — Sharpen + parkrun',
+   desc:'6 miles easy. Keeping legs fresh for Saturday.',
+   category:'WORKOUT',eventType:'Run',distance:9656,duration:3000},
+  {date:'2026-04-24',day:'Fri',type:'easy',name:'Easy + strides',week:'Wk5 — Sharpen + parkrun',
+   desc:'5 miles easy with 4 strides.\nOpener for parkrun tomorrow.',
+   category:'WORKOUT',eventType:'Run',distance:8047,duration:2700},
+  {date:'2026-04-25',day:'Sat',type:'race',name:'Fast parkrun — 5k fitness check',week:'Wk5 — Sharpen + parkrun',
+   desc:'WU: 1.5mi easy\nParkrun — race effort, 5k all-out\nCD: 1mi easy\n\nThis is a fitness check, not a taper peak.\nWhatever you run, add ~15-20sec for what you\'d do fully tapered.\nGo for it.',
+   category:'WORKOUT',eventType:'Run',distance:8047,duration:2400,load:30},
+  {date:'2026-04-26',day:'Sun',type:'easy',name:'Easy run',week:'Wk5 — Sharpen + parkrun',
+   desc:'8 miles easy. Shake out the parkrun.\nTravel to Amsterdam tomorrow.',
+   category:'WORKOUT',eventType:'Run',distance:12875,duration:4000},
+
+  // ===================== WEEK 6: 27 Apr - 3 May — Amsterdam (taper) =====================
+  {date:'2026-04-27',day:'Mon',type:'rest',name:'Travel day — rest',week:'Wk6 — Amsterdam',
+   desc:'Travel to Amsterdam. Rest.',category:'NOTE'},
+  {date:'2026-04-28',day:'Tue',type:'easy',name:'EIM — 10×400m',week:'Wk6 — Amsterdam',
+   desc:'WU: 1mi easy\n10 × 400m — controlled, not racing\nFull walk-back recovery between reps\nCD: 1mi easy | Total: ~5mi\n\nNeuromuscular sharpness. Run smooth and relaxed.\nFind a flat stretch or park.',
+   workout:'Warm up\n- 1mi easy\n\nMain set 10x\n- 0.4km 5:27/mi Pace\n- 0.2km easy recovery\n\nCool down\n- 1mi easy',
+   category:'WORKOUT',eventType:'Run',distance:8047,duration:2400},
+  {date:'2026-04-29',day:'Wed',type:'easy',name:'EIM — 8×200m',week:'Wk6 — Amsterdam',
+   desc:'WU: 1mi easy\n8 × 200m — quick and smooth\nFull walk-back recovery\nCD: 1mi easy | Total: ~4mi\n\nShort and sharp. Keeping the legs alive.',
+   workout:'Warm up\n- 1mi easy\n\nMain set 8x\n- 0.2km 5:15/mi Pace\n- 0.2km easy recovery\n\nCool down\n- 1mi easy',
+   category:'WORKOUT',eventType:'Run',distance:6437,duration:2100},
+  {date:'2026-04-30',day:'Thu',type:'easy',name:'Easy run',week:'Wk6 — Amsterdam',
+   desc:'5-6 miles easy. Enjoy Amsterdam.',
+   category:'WORKOUT',eventType:'Run',distance:8852,duration:2700},
+  {date:'2026-05-01',day:'Fri',type:'easy',name:'EIM — 6×600m',week:'Wk6 — Amsterdam',
+   desc:'WU: 1mi easy\n6 × 600m — controlled rhythm\nFull walk-back or 90sec jog recovery\nCD: 1mi easy | Total: ~5.5mi\n\nLast sharpening session before race week.',
+   workout:'Warm up\n- 1mi easy\n\nMain set 6x\n- 0.6km 5:27/mi Pace\n- 0.2km easy recovery\n\nCool down\n- 1mi easy',
+   category:'WORKOUT',eventType:'Run',distance:8852,duration:2700},
+  {date:'2026-05-02',day:'Sat',type:'rest',name:'Travel day — rest',week:'Wk6 — Amsterdam',
+   desc:'Travel home. Rest or very easy 3mi shake-out if you get back early enough.',category:'NOTE'},
+  {date:'2026-05-03',day:'Sun',type:'easy',name:'Easy run',week:'Wk6 — Amsterdam',
+   desc:'7-8 miles easy. Back home, settling in.\nNo pace pressure. Just re-establish routine.',
+   category:'WORKOUT',eventType:'Run',distance:12070,duration:3600},
+
+  // ===================== WEEK 7: 4-10 May — Race week =====================
+  {date:'2026-05-04',day:'Mon',type:'easy',name:'Easy run',week:'Wk7 — RACE WEEK',
+   desc:'6 miles easy.',
+   category:'WORKOUT',eventType:'Run',distance:9656,duration:3000},
+  {date:'2026-05-05',day:'Tue',type:'quality',name:'4×1k @ 5:44/mi (race pace)',week:'Wk7 — RACE WEEK',
+   desc:'WU: 2mi easy\n4 × 1000m @ 5:44/mi (3:33/km) — 2 min jog recovery\nExact race pace. Dial in the rhythm.\nCD: 1.5mi easy | Total: ~6.5mi\n\nControlled and confident. This is a reminder, not a workout.',
+   workout:'Warm up\n- 2mi easy\n\nMain set 4x\n- 1km 5:44/mi Pace\n- 0.4km easy recovery\n\nCool down\n- 1.5mi easy',
+   category:'WORKOUT',eventType:'Run',distance:10460,duration:2700,load:25},
+  {date:'2026-05-06',day:'Wed',type:'easy',name:'Easy run',week:'Wk7 — RACE WEEK',
+   desc:'5 miles easy.',
+   category:'WORKOUT',eventType:'Run',distance:8047,duration:2700},
+  {date:'2026-05-07',day:'Thu',type:'easy',name:'Easy + 3 strides',week:'Wk7 — RACE WEEK',
+   desc:'4 miles easy with 3 strides at the end.\nKeeping the legs switched on.',
+   category:'WORKOUT',eventType:'Run',distance:6437,duration:2100},
+  {date:'2026-05-08',day:'Fri',type:'easy',name:'Shakeout',week:'Wk7 — RACE WEEK',
+   desc:'3 miles very easy.\nLast run before race day.\nStay off your feet the rest of the day.',
+   category:'WORKOUT',eventType:'Run',distance:4828,duration:1500},
+  {date:'2026-05-09',day:'Sat',type:'rest',name:'Rest',week:'Wk7 — RACE WEEK',
+   desc:'Full rest. Hydrate, eat carbs, lay out your kit.\nEarly night.',category:'NOTE'},
+  {date:'2026-05-10',day:'Sun',type:'race',name:'Bristol Half Marathon',week:'Wk7 — RACE WEEK',
+   desc:'TARGET: 1:14:59\nPace: 5:44/mi (3:33/km)\n\nFirst 3mi: 5:48-5:50 — controlled start, don\'t get pulled out too fast\nMiles 4-10: 5:44 — settle into rhythm\nMiles 10-13.1: 5:40-5:35 — bring it home\n\nNegative split. Trust the fitness. Race your race.',
+   workout:'Race strategy\n- 3mi 5:49/mi Pace controlled start\n- 7mi 5:44/mi Pace settle into rhythm\n- 3.1mi 5:38/mi Pace bring it home',
+   category:'RACE',eventType:'Run',distance:21097,duration:4499,load:100}
+];
+
+// =============================================================================
+// STATE
+// =============================================================================
+let athleteId = '';
+let apiKey = '';
+let wellnessData = [];
+let activitiesData = [];
+let pmcDays = 90;
+let pmcChartInstance = null;
+let mileageChartInstance = null;
+let loadChartInstance = null;
+
+// =============================================================================
+// AUTH
+// =============================================================================
+function doLogin() {
+  athleteId = document.getElementById('athleteId').value.trim();
+  apiKey = document.getElementById('apiKey').value.trim();
+  const remember = document.getElementById('rememberMe').checked;
+
+  if (!athleteId || !apiKey) {
+    document.getElementById('loginError').textContent = 'Both fields required';
+    return;
+  }
+
+  const btn = document.getElementById('loginBtn');
+  btn.disabled = true;
+  btn.textContent = 'Connecting...';
+  document.getElementById('loginError').textContent = '';
+
+  // Test credentials
+  apiFetch('/api/v1/athlete/' + athleteId)
+    .then(data => {
+      if (remember) {
+        localStorage.setItem('icu_athlete', athleteId);
+        localStorage.setItem('icu_key', btoa(apiKey));
+      } else {
+        sessionStorage.setItem('icu_athlete', athleteId);
+        sessionStorage.setItem('icu_key', btoa(apiKey));
+      }
+      showDashboard(data);
+    })
+    .catch(err => {
+      document.getElementById('loginError').textContent = 'Connection failed: ' + err.message;
+      btn.disabled = false;
+      btn.textContent = 'Connect';
+    });
+}
+
+function doLogout() {
+  localStorage.removeItem('icu_athlete');
+  localStorage.removeItem('icu_key');
+  sessionStorage.removeItem('icu_athlete');
+  sessionStorage.removeItem('icu_key');
+  athleteId = '';
+  apiKey = '';
+  document.getElementById('dashboard').style.display = 'none';
+  document.getElementById('loginScreen').style.display = 'flex';
+}
+
+function checkSavedLogin() {
+  let aid = localStorage.getItem('icu_athlete') || sessionStorage.getItem('icu_athlete');
+  let key = localStorage.getItem('icu_key') || sessionStorage.getItem('icu_key');
+  if (aid && key) {
+    athleteId = aid;
+    apiKey = atob(key);
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('dashboard').style.display = 'block';
+    apiFetch('/api/v1/athlete/' + athleteId)
+      .then(data => showDashboard(data))
+      .catch(() => doLogout());
+  }
+}
+
+// =============================================================================
+// API
+// =============================================================================
+function apiFetch(path) {
+  const url = PROXY_BASE + path;
+  return fetch(url, {
+    headers: {
+      'Authorization': 'Basic ' + btoa('API_KEY:' + apiKey),
+      'Accept': 'application/json',
+    },
+  }).then(res => {
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    return res.json();
+  });
+}
+
+// =============================================================================
+// HELPERS
+// =============================================================================
+function toMi(m) { return m * 0.000621371; }
+function fmtPace(secs, meters) {
+  var p = secs / toMi(meters);
+  return Math.floor(p / 60) + ':' + String(Math.round(p % 60)).padStart(2, '0');
+}
+function fmtDur(secs) {
+  var h = Math.floor(secs / 3600), m = Math.floor((secs % 3600) / 60), s = Math.round(secs % 60);
+  if (h > 0) return h + ':' + String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
+  return m + ':' + String(s).padStart(2, '0');
+}
+function fmtDate(d) { return new Date(d + 'T12:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }); }
+function fmtDay(d) { return new Date(d + 'T12:00:00').toLocaleDateString('en-GB', { weekday: 'short' }); }
+function daysTo(d) { return Math.ceil((new Date(d) - new Date()) / 86400000); }
+function weekOf(d) {
+  var dt = new Date(d + 'T12:00:00'), day = dt.getDay(), diff = dt.getDate() - day + (day === 0 ? -6 : 1);
+  return new Date(dt.setDate(diff)).toISOString().split('T')[0];
+}
+function classify(a) {
+  var t = a.type || '';
+  if (t === 'VirtualRide' || t === 'Ride') return 'ride';
+  var n = a.name || '';
+  if (/parkrun|marathon|race|redemption/i.test(n)) return 'race';
+  var tl = a.icu_training_load || a.training_load || 0;
+  if (tl >= 50 || /^DP[\s-]|Track|fartlek|rhythm|1500|6xK/i.test(n)) return 'quality';
+  return 'easy';
+}
+function classColor(c) {
+  return c === 'race' ? '#E24B4A' : c === 'quality' ? '#EF9F27' : c === 'ride' ? '#AFA9EC' : '#378ADD';
+}
+
+// =============================================================================
+// DASHBOARD
+// =============================================================================
+function showDashboard(profile) {
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('dashboard').style.display = 'block';
+
+  var name = (profile.name || profile.firstname || athleteId);
+  document.getElementById('athleteName').textContent = name;
+  document.getElementById('dateLabel').textContent = new Date().toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
+
+  // Race badges
+  var badges = '';
+  RACES.forEach(function(r) {
+    var d = daysTo(r.date);
+    if (d > 0) {
+      badges += '<div class="race-badge upcoming"><span class="race-days" style="color:var(--race)">' + d + 'd</span><span class="race-label">' + r.name + ' — target ' + r.target + '</span></div>';
+    }
+  });
+  document.getElementById('raceBadges').innerHTML = badges;
+
+  // Show coach panels only for Tom's account
+  if (athleteId === 'i344297') {
+    document.getElementById('coachPanels').style.display = 'block';
+  }
+
+  renderPlan();
+  loadAllData();
+}
+
+function loadAllData() {
+  var today = new Date().toISOString().split('T')[0];
+  var d90 = new Date(Date.now() - 90 * 86400000).toISOString().split('T')[0];
+  var raceEnd = RACES.length > 0 ? RACES[RACES.length - 1].date : new Date(Date.now() + 60 * 86400000).toISOString().split('T')[0];
+
+  Promise.all([
+    apiFetch('/api/v1/athlete/' + athleteId + '/wellness?oldest=' + d90 + '&newest=' + today),
+    apiFetch('/api/v1/athlete/' + athleteId + '/activities?oldest=' + d90 + '&newest=' + today),
+    apiFetch('/api/v1/athlete/' + athleteId + '/events?oldest=' + today + '&newest=' + raceEnd),
+  ]).then(function(results) {
+    wellnessData = results[0] || [];
+    activitiesData = results[1] || [];
+    var events = results[2] || [];
+
+    renderMetrics();
+    renderStatus();
+    renderPMC();
+    renderWeeklyMileage();
+    renderTrainingLoad();
+    renderWellness();
+    renderSessions();
+    renderCalendarPlan(events);
+  }).catch(function(err) {
+    document.getElementById('metricsBar').innerHTML = '<div class="empty-state">Failed to load data: ' + err.message + '</div>';
+  });
+}
+
+// =============================================================================
+// RENDERERS
+// =============================================================================
+function renderMetrics() {
+  // wellness data comes as array, most recent first or sorted by date
+  var sorted = wellnessData.slice().sort(function(a, b) { return b.id.localeCompare(a.id); });
+  var latest = sorted[0] || {};
+  var ctl = latest.ctl || 0;
+  var atl = latest.atl || 0;
+  var tsb = Math.round((ctl - atl) * 10) / 10;
+  var rhr = latest.restingHR || '—';
+  var formColor = tsb > 5 ? 'var(--green)' : tsb > -5 ? 'var(--amber)' : 'var(--red)';
+  var formLabel = tsb > 10 ? 'Fresh' : tsb > 0 ? 'Recovering' : tsb > -10 ? 'Loaded' : 'Fatigued';
+
+  document.getElementById('metricsBar').innerHTML =
+    metric('Fitness', Math.round(ctl * 10) / 10, 'CTL', 'var(--fitness)') +
+    metric('Fatigue', Math.round(atl * 10) / 10, 'ATL', 'var(--fatigue)') +
+    metric('Form', (tsb > 0 ? '+' : '') + tsb, formLabel, formColor) +
+    metric('Resting HR', rhr, 'bpm', 'var(--bright)');
+}
+
+function metric(label, val, unit, color) {
+  return '<div class="metric"><div class="metric-label">' + label + '</div>' +
+    '<span class="metric-value" style="color:' + color + '">' + val + '</span>' +
+    '<span class="metric-unit">' + unit + '</span></div>';
+}
+
+function renderStatus() {
+  var runs = activitiesData.filter(function(a) { return a.type === 'Run'; });
+  var rides = activitiesData.filter(function(a) { return a.type === 'VirtualRide' || a.type === 'Ride'; });
+  var totalRunMiles = runs.reduce(function(s, a) { return s + toMi(a.distance || 0); }, 0);
+  var totalRuns = runs.length;
+  var totalRides = rides.length;
+
+  var sorted = wellnessData.slice().sort(function(a, b) { return b.id.localeCompare(a.id); });
+  var latest = sorted[0] || {};
+  var ctl = latest.ctl || 0;
+  var rhr = latest.restingHR || 0;
+
+  // Find key sessions
+  var paddockWood = runs.find(function(a) { return (a.name || '').toLowerCase().includes('paddock wood'); });
+  var parkrun = runs.find(function(a) { return (a.name || '').toLowerCase().includes('parkrun'); });
+  var qualitySessions = runs.filter(function(a) { return (a.icu_training_load || 0) >= 50; });
+
+  var pwTime = paddockWood ? fmtDur(paddockWood.moving_time || paddockWood.elapsed_time || 0) : null;
+  var prTime = parkrun ? fmtDur(parkrun.moving_time || parkrun.elapsed_time || 0) : null;
+
+  var narrative = '';
+
+  // Coach note
+  if (COACH_NOTE) {
+    narrative += '<div style="padding:10px 12px;background:var(--bg);border-radius:6px;margin-bottom:12px;border-left:2px solid var(--fitness)">';
+    narrative += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px"><span style="font-size:10px;font-family:var(--fm);color:var(--fitness);letter-spacing:0.06em;text-transform:uppercase">Coach note</span><span style="font-size:10px;font-family:var(--fm);color:var(--muted)">' + COACH_DATE + '</span></div>';
+    narrative += '<div style="font-size:12px;color:var(--bright);line-height:1.6">' + COACH_NOTE + '</div>';
+    narrative += '</div>';
+  }
+
+  // Data summary heading
+  narrative += '<div style="font-size:10px;font-family:var(--fm);color:var(--muted);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:6px">Data summary</div>';
+
+  // Opening line
+  narrative += '<p style="margin:0 0 8px">Over the last 30 days you\'ve logged <strong>' + Math.round(totalRunMiles) + ' running miles</strong> across ' + totalRuns + ' runs';
+  if (totalRides > 0) narrative += ', plus ' + totalRides + ' bike sessions';
+  narrative += '. ';
+
+  // Key race
+  if (paddockWood) {
+    narrative += 'The headline was <strong>Paddock Wood half marathon in ' + pwTime + '</strong> on 8 March — a solid practice race on a hilly course that gives you a clear baseline for Bristol.</p>';
+  }
+
+  // Current state
+  narrative += '<p style="margin:0 0 8px">';
+  if (ctl < 40) {
+    narrative += 'Fitness (CTL ' + Math.round(ctl) + ') has dipped from the low 40s following a lighter post-race period and a sore throat over the weekend. ';
+  } else {
+    narrative += 'Fitness is holding steady at CTL ' + Math.round(ctl) + '. ';
+  }
+  narrative += 'Resting HR is stable at ' + rhr + ' bpm — no signs of overreaching or illness impact on cardiac markers. ';
+
+  // Training pattern
+  if (rides.length >= 4) {
+    narrative += 'You shifted to bike-dominant training post-Paddock Wood, which maintained aerobic stimulus while reducing running impact. ';
+  }
+  narrative += '</p>';
+
+  // Forward look
+  narrative += '<p style="margin:0">The priority now is rebuilding running-specific volume and layering in race-pace work over the next 7 weeks. The aerobic base is there — Paddock Wood proved that. The task is sharpening it toward 5:44/mi race pace for Bristol.</p>';
+
+  document.getElementById('statusNarrative').innerHTML = narrative;
+}
+
+function renderPMC() {
+  var sorted = wellnessData.slice().sort(function(a, b) { return a.id.localeCompare(b.id); });
+  var data = sorted.slice(-pmcDays);
+
+  var labels = data.map(function(w) { return w.id; });
+  var fitness = data.map(function(w) { return w.ctl || 0; });
+  var fatigue = data.map(function(w) { return w.atl || 0; });
+  var form = data.map(function(w) { return (w.ctl || 0) - (w.atl || 0); });
+
+  if (pmcChartInstance) pmcChartInstance.destroy();
+  pmcChartInstance = new Chart(document.getElementById('pmcChart'), {
+    type: 'line',
+    data: {
+      labels: labels,
+      datasets: [
+        { label: 'Fitness', data: fitness, borderColor: '#5DCAA5', borderWidth: 2, pointRadius: 0, tension: 0.3 },
+        { label: 'Fatigue', data: fatigue, borderColor: '#F09575', borderWidth: 2, pointRadius: 0, tension: 0.3 },
+        { label: 'Form', data: form, borderColor: '#85B7EB', borderWidth: 1.5, pointRadius: 0, tension: 0.3, fill: { target: 'origin', above: 'rgba(133,183,235,0.07)', below: 'rgba(133,183,235,0.04)' } },
+      ],
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false }, tooltip: { mode: 'index', intersect: false } },
+      scales: {
+        x: { display: true, ticks: { maxTicksLimit: 8, font: { family: "'JetBrains Mono'", size: 9 }, color: '#6b6f7b' }, grid: { color: '#1e2128' } },
+        y: { ticks: { font: { family: "'JetBrains Mono'", size: 9 }, color: '#6b6f7b' }, grid: { color: '#1e2128' } },
+      },
+    },
+  });
+}
+
+function setPmcRange(days) {
+  pmcDays = days;
+  document.querySelectorAll('.toggle-btn').forEach(function(b) {
+    b.classList.toggle('active', parseInt(b.dataset.days) === days);
+  });
+  renderPMC();
+}
+
+function renderWeeklyMileage() {
+  var runs = activitiesData.filter(function(a) { return a.type === 'Run'; });
+  var weeks = {};
+  runs.forEach(function(a) {
+    var d = (a.start_date_local || a.start_date || '').split('T')[0];
+    var ws = weekOf(d);
+    weeks[ws] = (weeks[ws] || 0) + toMi(a.distance || 0);
+  });
+  var sorted = Object.entries(weeks).sort(function(a, b) { return a[0].localeCompare(b[0]); }).slice(-12);
+
+  var current = sorted.length > 0 ? sorted[sorted.length - 1][1] : 0;
+  var target = 45;
+  var pct = Math.round((current / target) * 100);
+  var color = pct >= 85 ? 'var(--green)' : pct >= 60 ? 'var(--amber)' : 'var(--red)';
+
+  document.getElementById('weekMileageHeader').innerHTML =
+    '<div style="display:flex;align-items:baseline;gap:5px;margin-bottom:3px">' +
+    '<span style="font-size:26px;font-weight:600;font-family:var(--fm);color:' + color + '">' + Math.round(current) + '</span>' +
+    '<span style="font-size:13px;font-family:var(--fm);color:var(--muted)">/ ' + target + ' mi</span></div>' +
+    '<div class="progress-outer"><div class="progress-inner" style="width:' + Math.min(pct, 100) + '%;background:' + color + '"></div></div>' +
+    '<div class="progress-labels"><span>this week</span><span>' + pct + '%</span></div>';
+
+  if (mileageChartInstance) mileageChartInstance.destroy();
+  mileageChartInstance = new Chart(document.getElementById('mileageChart'), {
+    type: 'bar',
+    data: {
+      labels: sorted.map(function(s) { return fmtDate(s[0]); }),
+      datasets: [{ data: sorted.map(function(s) { return Math.round(s[1] * 10) / 10; }), backgroundColor: '#378ADD', borderRadius: 3 }],
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { ticks: { font: { family: "'JetBrains Mono'", size: 8 }, color: '#6b6f7b' }, grid: { display: false } },
+        y: { ticks: { font: { family: "'JetBrains Mono'", size: 8 }, color: '#6b6f7b' }, grid: { color: '#1e2128' } },
+      },
+    },
+  });
+}
+
+function renderTrainingLoad() {
+  var weeks = {};
+  activitiesData.forEach(function(a) {
+    var d = (a.start_date_local || a.start_date || '').split('T')[0];
+    var ws = weekOf(d);
+    if (!weeks[ws]) weeks[ws] = { easy: 0, quality: 0, race: 0, ride: 0 };
+    var c = classify(a);
+    var tl = a.icu_training_load || 0;
+    weeks[ws][c] += tl;
+  });
+  var sorted = Object.entries(weeks).sort(function(a, b) { return a[0].localeCompare(b[0]); }).slice(-12);
+
+  if (loadChartInstance) loadChartInstance.destroy();
+  loadChartInstance = new Chart(document.getElementById('loadChart'), {
+    type: 'bar',
+    data: {
+      labels: sorted.map(function(s) { return fmtDate(s[0]); }),
+      datasets: [
+        { label: 'Easy', data: sorted.map(function(s) { return s[1].easy; }), backgroundColor: '#378ADD' },
+        { label: 'Quality', data: sorted.map(function(s) { return s[1].quality; }), backgroundColor: '#EF9F27' },
+        { label: 'Race', data: sorted.map(function(s) { return s[1].race; }), backgroundColor: '#E24B4A' },
+        { label: 'Ride', data: sorted.map(function(s) { return s[1].ride; }), backgroundColor: '#AFA9EC' },
+      ],
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { stacked: true, ticks: { font: { family: "'JetBrains Mono'", size: 8 }, color: '#6b6f7b' }, grid: { display: false } },
+        y: { stacked: true, ticks: { font: { family: "'JetBrains Mono'", size: 8 }, color: '#6b6f7b' }, grid: { color: '#1e2128' } },
+      },
+    },
+  });
+}
+
+function renderWellness() {
+  var sorted = wellnessData.slice().sort(function(a, b) { return b.id.localeCompare(a.id); });
+  var w14 = sorted.slice(0, 14);
+  var latest = w14[0] || {};
+  var prev = w14[1] || {};
+
+  var rhrData = w14.map(function(w) { return w.restingHR; }).reverse();
+  var sleepData = w14.map(function(w) { return w.sleepSecs ? w.sleepSecs / 3600 : null; }).reverse();
+  var scoreData = w14.map(function(w) { return w.sleepScore; }).reverse();
+
+  function trend(data) {
+    var r = data.slice(-7).filter(function(v) { return v != null; });
+    var o = data.slice(0, 7).filter(function(v) { return v != null; });
+    if (r.length < 2 || o.length < 2) return '<span class="trend-arrow" style="color:var(--muted)">→</span>';
+    var ar = r.reduce(function(a, b) { return a + b; }, 0) / r.length;
+    var ao = o.reduce(function(a, b) { return a + b; }, 0) / o.length;
+    var pct = Math.abs((ar - ao) / (ao || 1)) * 100;
+    if (pct < 3) return '<span class="trend-arrow" style="color:var(--muted)">→</span>';
+    return ar > ao ? '<span class="trend-arrow" style="color:var(--green)">↑</span>' : '<span class="trend-arrow" style="color:var(--red)">↓</span>';
+  }
+
+  function spark(data, color) {
+    var f = data.filter(function(v) { return v != null; });
+    if (f.length < 2) return '';
+    var mn = Math.min.apply(null, f), mx = Math.max.apply(null, f), r = mx - mn || 1;
+    var pts = f.map(function(v, i) {
+      return ((i / (f.length - 1)) * 110) + ',' + (28 - ((v - mn) / r) * 24 - 2);
+    }).join(' ');
+    return '<svg width="110" height="28"><polyline points="' + pts + '" fill="none" stroke="' + color + '" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  }
+
+  var sleepHrs = prev.sleepSecs ? (prev.sleepSecs / 3600).toFixed(1) : '—';
+
+  document.getElementById('wellnessRow').innerHTML =
+    wellnessItem('Resting HR', (latest.restingHR || '—'), 'bpm', trend(rhrData), spark(rhrData, '#F09575')) +
+    wellnessItem('Sleep', sleepHrs, 'hrs', trend(sleepData), spark(sleepData, '#85B7EB')) +
+    wellnessItem('Sleep score', (prev.sleepScore || '—'), '', trend(scoreData), spark(scoreData, '#EF9F27'));
+}
+
+function wellnessItem(label, val, unit, trendHtml, sparkHtml) {
+  return '<div class="wellness-item">' +
+    '<div class="wellness-header"><span class="wellness-label">' + label + '</span>' + trendHtml + '</div>' +
+    '<div class="wellness-value">' + val + (unit ? '<span class="wellness-unit">' + unit + '</span>' : '') + '</div>' +
+    sparkHtml + '</div>';
+}
+
+function renderSessions() {
+  var sorted = activitiesData.slice().sort(function(a, b) {
+    return (b.start_date_local || b.start_date || '').localeCompare(a.start_date_local || a.start_date || '');
+  });
+  var recent = sorted.slice(0, 10);
+
+  if (recent.length === 0) {
+    document.getElementById('sessionsContainer').innerHTML = '<div class="empty-state">No recent activities</div>';
+    return;
+  }
+
+  var html = '';
+  recent.forEach(function(a) {
+    var c = classify(a);
+    var color = classColor(c);
+    var d = (a.start_date_local || a.start_date || '').split('T')[0];
+    var miles = toMi(a.distance || 0);
+    var isRun = a.type === 'Run';
+    var tl = a.icu_training_load || 0;
+    var hr = a.average_heartrate || 0;
+    var el = a.total_elevation_gain || 0;
+
+    var meta = miles.toFixed(1) + ' mi · ' + fmtDur(a.moving_time || a.elapsed_time || 0);
+    if (isRun && a.distance > 0 && a.moving_time > 0) meta += ' · ' + fmtPace(a.moving_time, a.distance) + ' /mi';
+    if (hr) meta += ' · ' + Math.round(hr) + ' bpm';
+    if (tl) meta += ' · ' + tl + ' load';
+
+    html += '<div class="session-card" style="background:' + color + '09;border-left-color:' + color + '">' +
+      '<div style="flex:1"><div class="session-name">' + (a.name || 'Activity') + '</div>' +
+      '<div class="session-meta">' + meta + '</div></div>' +
+      '<div class="session-date"><div>' + fmtDay(d) + '</div><div>' + fmtDate(d) + '</div></div></div>';
+  });
+  document.getElementById('sessionsContainer').innerHTML = html;
+}
+
+function renderCalendarPlan(events) {
+  if (!events || events.length === 0) {
+    document.getElementById('planTitle').textContent = 'Training plan';
+    document.getElementById('planContainer').innerHTML = '<div class="empty-state">No planned workouts on the Intervals.icu calendar</div>';
+    return;
+  }
+
+  var sorted = events.slice().sort(function(a, b) {
+    return (a.start_date_local || '').localeCompare(b.start_date_local || '');
+  });
+
+  document.getElementById('planTitle').textContent = 'Training plan — ' + sorted.length + ' sessions to race day';
+
+  var html = '';
+  var currentWeek = '';
+
+  sorted.forEach(function(e) {
+    var d = (e.start_date_local || '').split('T')[0];
+    var ws = weekOf(d);
+    var weekLabel = 'Week of ' + fmtDate(ws);
+
+    if (weekLabel !== currentWeek) {
+      currentWeek = weekLabel;
+      html += '<div style="font-size:10px;font-family:var(--fm);color:var(--fitness);letter-spacing:0.06em;text-transform:uppercase;margin:14px 0 6px;padding-top:10px;border-top:1px solid var(--border)">' + weekLabel + '</div>';
+    }
+
+    var cat = e.category || '';
+    var cls = 'easy';
+    if (cat === 'RACE') cls = 'race';
+    else if (cat === 'NOTE') cls = 'rest';
+    else {
+      var tl = e.icu_training_load || 0;
+      var nm = (e.name || '').toLowerCase();
+      if (e.type === 'VirtualRide' || e.type === 'Ride') cls = 'ride';
+      else if (/parkrun|marathon|race|redemption/i.test(nm)) cls = 'race';
+      else if (tl >= 50 || /\d+[x×]\d+|tempo|threshold|sub-t/i.test(nm)) cls = 'quality';
+    }
+
+    var color = cls === 'race' ? '#E24B4A' : cls === 'quality' ? '#EF9F27' : cls === 'ride' ? '#AFA9EC' : cls === 'rest' ? '#6b6f7b' : '#378ADD';
+
+    var desc = e.description || '';
+    if (desc.length > 120) desc = desc.substring(0, 120) + '...';
+    desc = desc.replace(/\n/g, '<br>');
+
+    html += '<div class="plan-item ' + cls + '" style="border-left:3px solid ' + color + '">' +
+      '<div class="plan-day"><div class="plan-day-name">' + fmtDay(d) + '</div><div>' + fmtDate(d) + '</div></div>' +
+      '<div class="plan-details"><div class="plan-name">' + (e.name || 'Workout') + '</div>' +
+      '<div class="plan-desc">' + desc + '</div></div>' +
+      '</div>';
+  });
+
+  document.getElementById('planContainer').innerHTML = html;
+}
+
+// renderPlan now just shows the coach note header — plan data comes from calendar
+function renderPlan() {
+  // Plan title set by renderCalendarPlan after data loads
+}
+
+// =============================================================================
+// DEMO MODE — Static data snapshot for read-only viewing
+// =============================================================================
+var isDemo = false;
+
+function loadDemo() {
+  isDemo = true;
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('dashboard').style.display = 'block';
+
+  document.getElementById('athleteName').textContent = 'Tom Sherrington';
+  document.getElementById('dateLabel').textContent = '23 Mar 2026 (demo)';
+  document.getElementById('coachPanels').style.display = 'block';
+
+  var badges = '';
+  RACES.forEach(function(r) {
+    var d = daysTo(r.date);
+    if (d > 0) badges += '<div class="race-badge upcoming"><span class="race-days" style="color:var(--race)">' + d + 'd</span><span class="race-label">' + r.name + ' — target ' + r.target + '</span></div>';
+  });
+  document.getElementById('raceBadges').innerHTML = badges;
+
+  // Static wellness data (last 30 days)
+  wellnessData = [
+    {id:'2026-03-23',ctl:37.7,atl:27.3,restingHR:41},
+    {id:'2026-03-22',ctl:38.6,atl:31.5,restingHR:42,sleepSecs:27600,sleepScore:55},
+    {id:'2026-03-21',ctl:39.5,atl:36.3,restingHR:45,sleepSecs:33840,sleepScore:68},
+    {id:'2026-03-20',ctl:40.5,atl:41.9,restingHR:42,sleepSecs:27840,sleepScore:88},
+    {id:'2026-03-19',ctl:40.0,atl:38.8,restingHR:40,sleepSecs:28271,sleepScore:84},
+    {id:'2026-03-18',ctl:40.0,atl:38.5,restingHR:42,sleepSecs:28584,sleepScore:85},
+    {id:'2026-03-17',ctl:39.2,atl:33.7,restingHR:42,sleepSecs:30540,sleepScore:83},
+    {id:'2026-03-16',ctl:39.2,atl:32.4,restingHR:41,sleepSecs:27840,sleepScore:86},
+    {id:'2026-03-15',ctl:39.4,atl:33.1,restingHR:40,sleepSecs:28327,sleepScore:83},
+    {id:'2026-03-14',ctl:40.4,atl:38.2,restingHR:42,sleepSecs:29546,sleepScore:81},
+    {id:'2026-03-13',ctl:39.9,atl:35.0,restingHR:41,sleepSecs:27000,sleepScore:80},
+    {id:'2026-03-12',ctl:40.4,atl:37.1,restingHR:39,sleepSecs:29280,sleepScore:86},
+    {id:'2026-03-11',ctl:39.9,atl:33.3,restingHR:40,sleepSecs:31879,sleepScore:91},
+    {id:'2026-03-10',ctl:40.0,atl:33.2,restingHR:41,sleepSecs:31600,sleepScore:90},
+    {id:'2026-03-08',ctl:41.4,atl:39.7,restingHR:43,sleepSecs:29673,sleepScore:86},
+    {id:'2026-03-07',ctl:39.7,atl:29.2,restingHR:40,sleepSecs:28440,sleepScore:79},
+    {id:'2026-03-05',ctl:41.3,atl:36.0,restingHR:41,sleepSecs:27480,sleepScore:78},
+    {id:'2026-03-04',ctl:41.6,atl:37.0,restingHR:40,sleepSecs:29700,sleepScore:90},
+    {id:'2026-03-02',ctl:42.6,atl:42.1,restingHR:41,sleepSecs:27768,sleepScore:76},
+    {id:'2026-03-01',ctl:42.7,atl:42.9,restingHR:41,sleepSecs:26100,sleepScore:83},
+    {id:'2026-02-28',ctl:42.4,atl:40.9,restingHR:40,sleepSecs:26700,sleepScore:81},
+    {id:'2026-02-25',ctl:42.9,atl:43.0,restingHR:41,sleepSecs:30540,sleepScore:87},
+    {id:'2026-02-22',ctl:44.0,atl:50.2,restingHR:38,sleepSecs:29820,sleepScore:81}
+  ];
+
+  // Static activities (last 30 days)
+  activitiesData = [
+    {name:'MyWhoosh - 10 x 3',start_date_local:'2026-03-20T10:13:27',type:'VirtualRide',distance:23121,moving_time:2727,average_heartrate:121,icu_training_load:62},
+    {name:'Southwark Running',start_date_local:'2026-03-19T08:13:09',type:'Run',distance:11465,moving_time:3478,average_heartrate:136,icu_training_load:41},
+    {name:'DP - 2k',start_date_local:'2026-03-18T08:40:13',type:'Run',distance:14270,moving_time:3714,average_heartrate:155,icu_training_load:70,total_elevation_gain:112},
+    {name:'Loughborough Junction',start_date_local:'2026-03-17T08:15:50',type:'Run',distance:10181,moving_time:2953,average_heartrate:144,icu_training_load:42,total_elevation_gain:159},
+    {name:'Nido',start_date_local:'2026-03-16T07:57:52',type:'Run',distance:8056,moving_time:2404,average_heartrate:135,icu_training_load:28},
+    {name:'MyWhoosh - 3 x 10',start_date_local:'2026-03-14T15:58:49',type:'VirtualRide',distance:23569,moving_time:2977,average_heartrate:114,icu_training_load:56},
+    {name:'Ruskin park',start_date_local:'2026-03-10T10:07:40',type:'Run',distance:8053,moving_time:2457,average_heartrate:130,icu_training_load:25},
+    {name:'Paddock Wood half marathon',start_date_local:'2026-03-08T10:00:05',type:'Run',distance:21126,moving_time:4654,average_heartrate:167,icu_training_load:105,total_elevation_gain:77},
+    {name:'Shakeout',start_date_local:'2026-03-07T07:40:59',type:'Run',distance:4325,moving_time:1159,average_heartrate:141,icu_training_load:16},
+    {name:'Senegal Way',start_date_local:'2026-03-05T10:36:02',type:'Run',distance:8052,moving_time:2243,average_heartrate:141,icu_training_load:30},
+    {name:'DP - 1500/200',start_date_local:'2026-03-04T11:11:24',type:'Run',distance:10708,moving_time:3032,average_heartrate:139,icu_training_load:40},
+    {name:'The Royal Observatory',start_date_local:'2026-03-02T07:29:26',type:'Run',distance:10368,moving_time:2852,average_heartrate:140,icu_training_load:37},
+    {name:'Gipsy Hill',start_date_local:'2026-03-01T07:27:03',type:'Run',distance:14904,moving_time:4234,average_heartrate:141,icu_training_load:56,total_elevation_gain:190},
+    {name:'Burgess parkrun',start_date_local:'2026-02-28T09:02:54',type:'Run',distance:5021,moving_time:1019,average_heartrate:163,icu_training_load:22},
+    {name:'DP - 2k rhythm',start_date_local:'2026-02-25T08:37:34',type:'Run',distance:12889,moving_time:3432,average_heartrate:146,icu_training_load:54},
+    {name:'DR x Redemption February',start_date_local:'2026-02-22T08:50:53',type:'Run',distance:23698,moving_time:6277,average_heartrate:150,icu_training_load:104}
+  ];
+
+  renderPlan();
+  renderMetrics();
+  renderStatus();
+  renderPMC();
+  renderWeeklyMileage();
+  renderTrainingLoad();
+  renderWellness();
+  renderSessions();
+
+  // Demo plan events
+  var demoPlan = PLAN.map(function(p) {
+    return {
+      start_date_local: p.date + 'T08:00:00',
+      name: p.name,
+      category: p.category || 'WORKOUT',
+      type: p.eventType || '',
+      description: p.workout || p.desc || '',
+      icu_training_load: p.load || 0
+    };
+  });
+  renderCalendarPlan(demoPlan);
+}
+
+// =============================================================================
+// INIT
+// =============================================================================
+checkSavedLogin();
+</script>
+</body>
+</html>
