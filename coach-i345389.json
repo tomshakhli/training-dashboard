@@ -1,0 +1,20 @@
+{
+  "athlete_id": "i345389",
+  "coach_note": "Lorcan is on holiday in SE Asia — enjoying some well-earned downtime in the heat. Running is treadmill-only for now, keeping things ticking over with sessions like today's 400s (12.1km, avg HR 144, max 175). No pressure on volume or structure — this is maintenance mode. Full training resumes in April when he's back home. The big goal is Berlin Marathon in September, targeting sub-3:20. Lorcan has unfinished business after having to withdraw from Valencia Marathon last year. CTL is low at 5.3 — expected and totally fine. We have 5+ months to build properly once he's back. Enjoy the break.",
+  "coach_date": "2026-03-25",
+  "goal_race": "Berlin Marathon",
+  "goal_date": "2026-09-27",
+  "goal_time": "3:19:59",
+  "goal_pace": "4:44/km",
+  "predictions": [
+    {
+      "event": "Berlin Marathon",
+      "race": "Marathon",
+      "date": "2026-09-27",
+      "range": "3:18–3:25",
+      "target": "3:19:59",
+      "on_track": true,
+      "rationale": "Currently in maintenance mode on holiday — CTL at 5.3 is expected. With 5+ months of structured build from April, there is ample time to develop the aerobic base and marathon-specific fitness needed for sub-3:20. Previous Valencia Marathon training block shows he can handle the volume. On track provided the build starts in April as planned."
+    }
+  ]
+}
