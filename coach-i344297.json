@@ -1,30 +1,25 @@
 {
   "athlete_id": "i344297",
-  "coach_note": "Returning from a sore throat over the weekend — lost Fri-Mon to illness. Resting HR stayed at 41 bpm so no systemic impact, but sleep quality tanked (scores of 55-68 vs usual 80+). Back to easy running Tuesday, with the key 5×2k session on Thursday if feeling 100%. CTL has dipped from 42 to 37.7 post-Paddock Wood — expected after the race + lighter week + illness. The priority this week is getting back on the horse without forcing it. The fitness bank is deep enough that a few days off costs nothing.",
-  "coach_date": "23 Mar 2026",
-  "goal_race": "Bristol Half Marathon",
-  "goal_date": "2026-05-10",
-  "goal_time": "1:14:59",
-  "goal_pace": "5:44/mi",
-  "phase": "HM build — specific",
+  "coach_note": "Tonsillitis confirmed 24 Mar. First run back today (26 Mar) — 5km easy, HR 137 avg, felt OK. Throat still scratchy but fever-free for 3 days. Wellness markers show resting HR up slightly (43 vs usual 41-42) and HRV depressed (64 vs 84 pre-illness). Easing back in with easy running Thu-Sun this week. Plan adjusted: 4×2k on Mon 30 Mar (not 5×) to account for the illness week, progressing to 5×2k on Wed 8 Apr. Turbo sessions added weekly — sweet spot and VO2 intervals on the bike to maintain aerobic stimulus without impact stress. CTL 35.5, will rebuild quickly once volume returns. Six weeks of specific work remain before Bristol — still enough.",
+  "coach_date": "26 Mar 2026",
   "predictions": [
     {
-      "event": "Half marathon",
-      "race": "Bristol",
-      "date": "10 May",
-      "range": "1:14:30–1:15:30",
+      "event": "Half Marathon",
+      "race": "Bristol Half Marathon",
+      "date": "10 May 2026",
+      "range": "1:14:30 – 1:16:00",
       "target": "1:14:59",
       "on_track": true,
-      "rationale": "Paddock Wood 1:17:34 on a hilly course as practice race. 4×2k reps at 5:35/mi (103% RP) handled comfortably. Flat Bristol course + 7 weeks of specific work puts the target within reach. The 6×2k session in week 4 will be the key fitness confirmation."
+      "rationale": "Paddock Wood 1:17:34 on a hilly course as a practice race. One week lost to tonsillitis absorbed by deep fitness base. First run back today showed normal HR response. 4×2k on Mon 30th eases back into quality work before progressing to 5×2k the following week. Six weeks of specific work remain — enough for the key race-pace sessions and tempos. Bristol is flat and fast. Wider prediction range reflects illness uncertainty but target remains realistic."
     },
     {
-      "event": "5km",
-      "race": "Battersea Park",
-      "date": "Jun–Aug",
-      "range": "15:45–16:00",
-      "target": "sub-16",
+      "event": "5K",
+      "race": "Summer Battersea Park series",
+      "date": "Jun–Aug 2026",
+      "range": "15:45 – 16:00",
+      "target": "Sub-16:00",
       "on_track": true,
-      "rationale": "PB 16:11 set during marathon training with no 5k work. Burgess parkrun 16:59 in late Feb untapered on a slow course. The HM block is building a bigger aerobic engine — with dedicated 5k speed work over summer at Battersea, sub-16 is realistic."
+      "rationale": "PB 16:11 set during marathon training with no 5K-specific work. HM build strengthening the aerobic engine. Illness has no material impact on this longer-term goal. Summer 5K block with specific speedwork on top of this base should deliver sub-16."
     }
   ]
 }
