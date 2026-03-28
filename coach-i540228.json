@@ -1,11 +1,12 @@
 {
   "athlete_id": "i540228",
-  "coach_note": "Welcome to coached training, Chris. You've been dealing with a post-viral setback over the winter that knocked your fitness back, but the data from the last few weeks shows clear signs of recovery — resting HR is back to baseline (36–37), HRV is stabilising in the mid-50s, and you've been running consistently again since early March. The holiday in Tenerife has been good for you: extra rest, easy running, and a mental reset ahead of a proper training block.\n\nWe're calibrating your current fitness at approximately 20:00 5K (4:00/km). The priority right now is rebuilding your aerobic base conservatively — no rushing back to where you were pre-illness. The next 4–6 weeks are about re-establishing volume and consistency before we layer in any race-specific intensity. Your sub-threshold and EIM sessions from February showed you respond well to structured work, so we'll reintroduce those progressively once you're back to full training.\n\nKey focus areas: (1) rebuild weekly volume to 50–55km over the next month, (2) keep easy runs genuinely easy (HR below 125), (3) one quality session per week initially, building to two, (4) maintain your strength work twice weekly. We'll reassess race targets in 4 weeks once we see how you're absorbing the training load.",
+  "coach_note": "Welcome to coached training, Chris. You've been dealing with a post-viral setback over the winter that knocked your fitness back, but the data from the last few weeks shows clear signs of recovery — resting HR is back to baseline (36–37), HRV is stabilising in the mid-50s, and you've been running consistently again since early March. The holiday in Tenerife has been good for you: extra rest, easy running, and a mental reset ahead of a proper training block.\n\nWe're calibrating your current fitness at approximately 20:00 5K (4:00/km). The priority right now is rebuilding your aerobic base conservatively — no rushing back to where you were pre-illness. Your sub-threshold and EIM sessions from February showed you respond well to structured work, so we're reintroducing those progressively through a 10-week Norwegian Singles plan starting 31 March.\n\nKey focus areas: (1) rebuild weekly volume from 50km to 70km over 10 weeks, (2) keep easy runs genuinely easy (HR below 131bpm), (3) sub-threshold work at 141–149bpm — run by effort, not pace, (4) maintain your strength work twice weekly. We'll reassess race targets after the week 5 parkrun.",
   "coach_date": "2026-03-28",
   "goal_race": "TBC — rebuilding general fitness",
   "goal_date": "",
   "goal_time": "",
   "goal_pace": "",
+  "upcoming_training_notes": "10-week Norwegian Singles plan is live on the Intervals.icu calendar (31 Mar – 7 Jun 2026). Structure: 5 runs per week (Mon/Fri off), with 5 quality sessions spread across each 2-week cycle. Odd weeks have 3 workouts (Tue/Thu/Sat), even weeks have 2 (Tue/Thu) with Sat easy.\n\nWeek 1 starts conservatively with reduced reps (6×1km, 3×2km) since Chris is returning from post-viral disruption. Full rep caps (8×1km, 5×2km, 3×3km) are reached by week 3. Recovery weeks at weeks 4 and 8 drop volume ~20% and reduce to 2 workouts.\n\nBenchmark session: 3×3km sub-threshold — repeats in weeks 2, 3, 5, 7, 9, and 10. The key metric is pace at the same HR (141–149bpm). If Chris is running 5–10s/km faster at the same HR by week 9, that's clear aerobic development.\n\nParkrun fitness checks: Week 5 (2 May) is a midpoint checkpoint. Week 10 (6 Jun) is the capstone that informs what comes next — whether that's a race-specific block or continued base building.\n\nThings to watch: (1) Post-viral recovery may not be linear — if resting HR creeps above 40 or HRV drops below 45 for several consecutive days, we may need to adjust. (2) Chris's HR zones haven't been calibrated via field test — the 164 max HR and 149 LTHR are from Garmin estimates. A field test in weeks 4–5 would be valuable. (3) No threshold pace is set in Intervals.icu for running — worth configuring once we have benchmark data.",
   "predictions": [
     {
       "event": "Current Estimate",
@@ -23,7 +24,16 @@
       "range": "19:15–19:45",
       "target": "sub-19:30",
       "on_track": true,
-      "rationale": "If Chris returns to consistent 50–55km weeks with one quality session, aerobic gains should come quickly given his underlying fitness base (CTL was 31 pre-illness, now 28 and climbing). Expect 30–45 seconds improvement as training load normalises and post-viral effects fully clear."
+      "rationale": "If Chris returns to consistent 50–55km weeks with structured sub-threshold work, aerobic gains should come quickly given his underlying fitness base (CTL was 31 pre-illness, now 28 and climbing). Expect 30–45 seconds improvement as training load normalises and post-viral effects fully clear."
+    },
+    {
+      "event": "Week 5 Parkrun",
+      "race": "5K",
+      "date": "2026-05-02",
+      "range": "19:00–19:30",
+      "target": "sub-19:15",
+      "on_track": true,
+      "rationale": "By week 5 Chris will have completed 4 weeks of structured Norwegian Singles work at 50–58km/week. CTL should be approaching mid-30s. If benchmark 3×3km sessions show pace improvement at the same HR, sub-19:15 is realistic. This parkrun will calibrate the predictions for the second half of the block."
     }
   ]
 }
