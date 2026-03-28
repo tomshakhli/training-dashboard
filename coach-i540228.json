@@ -1,0 +1,29 @@
+{
+  "athlete_id": "i540228",
+  "coach_note": "Welcome to coached training, Chris. You've been dealing with a post-viral setback over the winter that knocked your fitness back, but the data from the last few weeks shows clear signs of recovery — resting HR is back to baseline (36–37), HRV is stabilising in the mid-50s, and you've been running consistently again since early March. The holiday in Tenerife has been good for you: extra rest, easy running, and a mental reset ahead of a proper training block.\n\nWe're calibrating your current fitness at approximately 20:00 5K (4:00/km). The priority right now is rebuilding your aerobic base conservatively — no rushing back to where you were pre-illness. The next 4–6 weeks are about re-establishing volume and consistency before we layer in any race-specific intensity. Your sub-threshold and EIM sessions from February showed you respond well to structured work, so we'll reintroduce those progressively once you're back to full training.\n\nKey focus areas: (1) rebuild weekly volume to 50–55km over the next month, (2) keep easy runs genuinely easy (HR below 125), (3) one quality session per week initially, building to two, (4) maintain your strength work twice weekly. We'll reassess race targets in 4 weeks once we see how you're absorbing the training load.",
+  "coach_date": "2026-03-28",
+  "goal_race": "TBC — rebuilding general fitness",
+  "goal_date": "",
+  "goal_time": "",
+  "goal_pace": "",
+  "predictions": [
+    {
+      "event": "Current Estimate",
+      "race": "5K",
+      "date": "2026-03-28",
+      "range": "19:45–20:15",
+      "target": "~20:00",
+      "on_track": true,
+      "rationale": "Based on recent easy paces (5:30–5:45/km at HR 105–115), sub-threshold efforts (5:10–5:20/km at HR 118–125), and the 21km effort on 8 March (4:55/km avg, max HR 159). Post-viral fitness loss is evident but recovery trajectory is positive. Conservative estimate accounts for residual fatigue and reduced training load over the past month."
+    },
+    {
+      "event": "4-Week Projection",
+      "race": "5K",
+      "date": "2026-04-25",
+      "range": "19:15–19:45",
+      "target": "sub-19:30",
+      "on_track": true,
+      "rationale": "If Chris returns to consistent 50–55km weeks with one quality session, aerobic gains should come quickly given his underlying fitness base (CTL was 31 pre-illness, now 28 and climbing). Expect 30–45 seconds improvement as training load normalises and post-viral effects fully clear."
+    }
+  ]
+}
