@@ -1,39 +1,41 @@
 {
   "athlete_id": "i540228",
-  "coach_note": "Welcome to coached training, Chris. You've been dealing with a post-viral setback over the winter that knocked your fitness back, but the data from the last few weeks shows clear signs of recovery — resting HR is back to baseline (36–37), HRV is stabilising in the mid-50s, and you've been running consistently again since early March. The holiday in Tenerife has been good for you: extra rest, easy running, and a mental reset ahead of a proper training block.\n\nWe're calibrating your current fitness at approximately 20:00 5K (4:00/km). The priority right now is rebuilding your aerobic base conservatively — no rushing back to where you were pre-illness. Your sub-threshold and EIM sessions from February showed you respond well to structured work, so we're reintroducing those progressively through a 10-week Norwegian Singles plan starting 31 March.\n\nKey focus areas: (1) rebuild weekly volume from 50km to 70km over 10 weeks, (2) keep easy runs genuinely easy (HR below 131bpm), (3) sub-threshold work at 141–149bpm — run by effort, not pace, (4) maintain your strength work twice weekly. We'll reassess race targets after the week 5 parkrun.",
-  "coach_date": "2026-03-28",
-  "goal_race": "TBC — rebuilding general fitness",
-  "goal_date": "",
-  "goal_time": "",
-  "goal_pace": "",
-  "upcoming_training_notes": "10-week Norwegian Singles plan is live on the Intervals.icu calendar (31 Mar – 7 Jun 2026). Structure: 5 runs per week (Mon/Fri off), with 5 quality sessions spread across each 2-week cycle. Odd weeks have 3 workouts (Tue/Thu/Sat), even weeks have 2 (Tue/Thu) with Sat easy.\n\nWeek 1 starts conservatively with reduced reps (6×1km, 3×2km) since Chris is returning from post-viral disruption. Full rep caps (8×1km, 5×2km, 3×3km) are reached by week 3. Recovery weeks at weeks 4 and 8 drop volume ~20% and reduce to 2 workouts.\n\nBenchmark session: 3×3km sub-threshold — repeats in weeks 2, 3, 5, 7, 9, and 10. The key metric is pace at the same HR (141–149bpm). If Chris is running 5–10s/km faster at the same HR by week 9, that's clear aerobic development.\n\nParkrun fitness checks: Week 5 (2 May) is a midpoint checkpoint. Week 10 (6 Jun) is the capstone that informs what comes next — whether that's a race-specific block or continued base building.\n\nThings to watch: (1) Post-viral recovery may not be linear — if resting HR creeps above 40 or HRV drops below 45 for several consecutive days, we may need to adjust. (2) Chris's HR zones haven't been calibrated via field test — the 164 max HR and 149 LTHR are from Garmin estimates. A field test in weeks 4–5 would be valuable. (3) No threshold pace is set in Intervals.icu for running — worth configuring once we have benchmark data.",
+  "coach_note": "April update. Chris is turning a corner. His March feedback form tells the story clearly: the holiday in Tenerife was the dividing line. Before it, every run was a struggle and sessions left him drained — the post-viral hangover had been dragging on for 4 months and his motivation had dropped. Since returning, every run has felt like a step forward. He reported running 20 minutes faster than marathon pace recently and it felt really good — that's a significant signal that the aerobic system is coming back online.\n\nWe've revised the 10-week Norwegian Singles plan to integrate his race schedule. The Harwich 5K series gives us regular fitness checkpoints, and the Bromley 10K (fun run with wife) and Colchester 10K (marker race) add variety without disrupting the training rhythm. Volume builds from 50km to 65km peak, with freshen weeks around the key races.\n\nAreas to address from March feedback: (1) Strength training has been neglected — Chris acknowledged this himself and wants to get back on it. Minimum 1-2 sessions per week, even if short. (2) Warm-ups for workouts need to be consistent — he scored low on this. The 2km warm-up in every structured session should help build the habit. (3) Nutrition timing post-run needs attention — he's not always eating soon after runs. (4) Energy levels and sleep have been middling but trending better since the holiday.",
+  "coach_date": "2026-04-02",
+  "goal_race": "Harwich 5K Series (28 Apr, 19 May, 9 Jun, 30 Jun, 21 Jul)",
+  "goal_date": "2026-04-28",
+  "goal_time": "sub-20:00 (Race 1), progressing toward sub-19:00",
+  "goal_pace": "4:00/km → 3:48/km",
+  "wellness_notes": "Wellness data as of 2 April 2026: Resting HR has settled to 35-38 bpm over the last two weeks — down from 40-41 during the Tenerife holiday period, which is a strong recovery signal. HRV is variable but trending upward: dipped to 39 on 24 Mar (post-hard effort day) but has been 56-64 since 27 Mar, with 59 today. The 39 reading looks like an outlier rather than a trend.\n\nSleep has been mixed — scores range from 72 to 94, with quality ratings between 1-3. The best sleep (score 94, quality 1) was on 1 Apr. Average sleep duration ~6.5-7.5 hours. Could be better — Chris's feedback form confirmed sleep is inconsistent.\n\nWeight jumped to 76.2kg on 27 Mar (likely post-holiday water retention/measurement artefact) but had been stable at 69.8-70.8 pre-holiday. CTL is at 29.3 as of 2 Apr, climbing steadily from the 27-28 trough in early March. ATL is 31.7 suggesting he's in a slight overreach position which is appropriate for the start of a training block.\n\nGarmin VO2max estimate has ticked up from 58 to 60 over the past two weeks — directionally encouraging, though these estimates should be taken with a grain of salt.\n\nKey watch items: (1) Resting HR above 40 for consecutive days would flag incomplete recovery. (2) HRV dropping below 45 for 3+ days warrants an easy week. (3) Sleep quality needs to improve — recommend consistent bedtime and limiting screens before sleep.",
+  "upcoming_training_notes": "REVISED 10-week plan live on Intervals.icu (1 Apr - 8 Jun 2026). Plan has been restructured around Chris's race schedule with freshen/recovery built around race dates.\n\nRace calendar integrated into the plan: 12 Apr Bromley 10K (fun run, replaces Sat easy in wk2), 28 Apr Harwich 5K Race 1 (freshened for — wk4 is a taper week), 10 May Colchester 10K (marker race, no taper, replaces Sun long in wk6), 19 May Harwich 5K Race 2 (Mon evening, reshuffles wk8), 9 Jun Harwich 5K Race 3 (just outside the block).\n\nVolume progression: 50 → 53 → 56 → 45 (freshen) → 52 → 58 → 62 → 59 → 50 (recovery) → 65km. Peak is 65km not 70km — with races every 2-3 weeks, 70km would require overloading between races.\n\nBenchmark session: 3x3km sub-threshold appears in weeks 3, 5, 6, 7, 8, and 10. The key metric remains pace at the same HR (141-149bpm).\n\nStrength: Chris has acknowledged neglecting this. Target 1-2 sessions per week minimum, even 15-20 minutes. Prioritise single-leg work (split squats, step-ups, single-leg deadlifts) given the running focus.\n\nHR zones to watch: Chris's 164 max HR and 149 LTHR are Garmin estimates, not field-tested. A proper calibration after the Harwich 5K Race 1 would be valuable — race HR data will give us a much better picture.",
+  "march_feedback_summary": "Consistency: moderate (disrupted by post-viral fatigue pre-holiday, improved after). Workout completion: struggled. Warm-ups: rarely done. Training volume: felt about right. Strength sessions: zero in March — head was down, motivation low. Strength gains: none. Sleep: inconsistent. Post-run nutrition: inconsistent. Energy: low pre-holiday, improving since. Health: improving after a difficult 4-month stretch.\n\nChris's own words: the holiday felt like a line where things started to improve. Before it, every run was still a struggle. Since returning, every run has felt like a step forward for the first time in about 4 months. He wants to get back on track and work toward where he was in December. Realistic about the Harwich 5K on 28 Apr being a marker to improve from rather than a peak performance.",
   "predictions": [
     {
-      "event": "Current Estimate",
+      "event": "Harwich 5K Race 1",
       "race": "5K",
-      "date": "2026-03-28",
-      "range": "19:45–20:15",
-      "target": "~20:00",
+      "date": "2026-04-28",
+      "range": "19:30-20:15",
+      "target": "sub-20:00",
       "on_track": true,
-      "rationale": "Based on recent easy paces (5:30–5:45/km at HR 105–115), sub-threshold efforts (5:10–5:20/km at HR 118–125), and the 21km effort on 8 March (4:55/km avg, max HR 159). Post-viral fitness loss is evident but recovery trajectory is positive. Conservative estimate accounts for residual fatigue and reduced training load over the past month."
+      "rationale": "4 weeks of structured training from a ~20:00 baseline. Holiday recovery reset was positive. Recent sub-MP run felt great. CTL climbing. Conservative target — this is a benchmark race, not a peak performance. Freshened with a 45km taper week."
     },
     {
-      "event": "4-Week Projection",
-      "race": "5K",
-      "date": "2026-04-25",
-      "range": "19:15–19:45",
-      "target": "sub-19:30",
+      "event": "Colchester 10K",
+      "race": "10K",
+      "date": "2026-05-10",
+      "range": "41:00-43:00",
+      "target": "sub-42:00",
       "on_track": true,
-      "rationale": "If Chris returns to consistent 50–55km weeks with structured sub-threshold work, aerobic gains should come quickly given his underlying fitness base (CTL was 31 pre-illness, now 28 and climbing). Expect 30–45 seconds improvement as training load normalises and post-viral effects fully clear."
+      "rationale": "Marker race off normal training — no taper. 6 weeks into the block with CTL likely mid-30s by then. Chris said himself it's probably too soon, but it'll give a useful data point. Pace estimate based on ~19:30-20:00 5K fitness extrapolated to 10K."
     },
     {
-      "event": "Week 5 Parkrun",
+      "event": "Harwich 5K Race 2",
       "race": "5K",
-      "date": "2026-05-02",
-      "range": "19:00–19:30",
+      "date": "2026-05-19",
+      "range": "18:45-19:30",
       "target": "sub-19:15",
       "on_track": true,
-      "rationale": "By week 5 Chris will have completed 4 weeks of structured Norwegian Singles work at 50–58km/week. CTL should be approaching mid-30s. If benchmark 3×3km sessions show pace improvement at the same HR, sub-19:15 is realistic. This parkrun will calibrate the predictions for the second half of the block."
+      "rationale": "7 weeks of consistent Norwegian Singles work. Benchmark sessions should show clear pace improvement at same HR by this point. If Race 1 was sub-20 and training has gone well, 30-60 seconds improvement is realistic."
     }
   ]
 }
