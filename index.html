@@ -761,9 +761,44 @@ function renderStatus() {
   // Data summary
   narrative += '<div style="font-size:10px;font-family:var(--fm);color:var(--muted);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:6px">Data summary</div>';
   narrative += '<p style="margin:0 0 8px">Over the last 30 days: <strong>' + Math.round(totalRunMiles) + ' running miles</strong> across ' + totalRuns + ' runs';
-  if (totalRides > 0) narrative += ', plus ' + totalRides + ' bike sessions';
-  narrative += '. ';
-  narrative += 'Fitness CTL ' + Math.round(ctl) + ', resting HR ' + rhr + ' bpm.</p>';
+  if (totalRides > 0) narrative += ', plus ' + totalRides + ' bike session' + (totalRides > 1 ? 's' : '');
+  narrative += '. Fitness CTL ' + Math.round(ctl) + ', resting HR ' + rhr + ' bpm.</p>';
+
+  // Key sessions
+  var qualitySessions = runs.filter(function(a) { return (a.icu_training_load || 0) >= 50; });
+  var races = runs.filter(function(a) { return (a.name || '').toLowerCase().match(/marathon|parkrun|race|redemption/); });
+  if (races.length > 0 || qualitySessions.length > 0) {
+    narrative += '<p style="margin:0 0 8px">';
+    if (races.length > 0) {
+      var race = races[0];
+      var raceMiles = toMi(getDist(race));
+      var racePace = race.moving_time && getDist(race) > 0 ? fmtPace(race.moving_time, getDist(race)) : null;
+      narrative += 'Key result: <strong>' + race.name + '</strong>';
+      if (racePace) narrative += ' (' + raceMiles.toFixed(1) + 'mi, ' + racePace + '/mi, avg HR ' + (race.average_heartrate || '—') + ')';
+      narrative += '. ';
+    }
+    if (qualitySessions.length > 0) {
+      narrative += qualitySessions.length + ' quality session' + (qualitySessions.length > 1 ? 's' : '') + ' in the period';
+      var avgQLoad = qualitySessions.reduce(function(s, a) { return s + (a.icu_training_load || 0); }, 0) / qualitySessions.length;
+      narrative += ' averaging ' + Math.round(avgQLoad) + ' training load. ';
+    }
+    narrative += '</p>';
+  }
+
+  // Wellness trends
+  if (sorted.length >= 7) {
+    var recentCTL = sorted[0].ctl || 0;
+    var olderCTL = sorted[Math.min(6, sorted.length - 1)].ctl || 0;
+    var ctlTrend = recentCTL - olderCTL;
+    narrative += '<p style="margin:0">CTL trend: ';
+    if (ctlTrend < -3) narrative += 'declining (' + Math.round(olderCTL) + ' → ' + Math.round(recentCTL) + ' over the past week). ';
+    else if (ctlTrend > 3) narrative += 'rising (' + Math.round(olderCTL) + ' → ' + Math.round(recentCTL) + '). ';
+    else narrative += 'stable around ' + Math.round(recentCTL) + '. ';
+
+    var avgSleep = sorted.filter(function(w) { return w.sleepScore; }).reduce(function(s, w) { return s + w.sleepScore; }, 0) / (sorted.filter(function(w) { return w.sleepScore; }).length || 1);
+    if (avgSleep > 0) narrative += 'Average sleep score: ' + Math.round(avgSleep) + '/100.';
+    narrative += '</p>'
+  }
 
   document.getElementById('statusNarrative').innerHTML = narrative;
 }
@@ -1057,8 +1092,10 @@ function loadDemo() {
           document.getElementById('phaseTag').style.display = '';
         }
       }
+      // Render status AFTER coach data has loaded
+      renderStatus();
     })
-    .catch(function() {});
+    .catch(function() { renderStatus(); });
 
   var badges = '';
   RACES.forEach(function(r) {
@@ -1116,7 +1153,6 @@ function loadDemo() {
 
   renderPlan();
   renderMetrics();
-  renderStatus();
   renderPMC();
   renderWeeklyMileage();
   renderTrainingLoad();
