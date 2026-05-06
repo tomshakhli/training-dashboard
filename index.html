@@ -1068,7 +1068,7 @@ function loadDemo() {
   document.getElementById('dashboard').style.display = 'block';
 
   document.getElementById('athleteName').textContent = 'Tom Sherrington';
-  document.getElementById('dateLabel').textContent = '23 Mar 2026 (demo)';
+  document.getElementById('dateLabel').textContent = '6 May 2026 (demo)';
 
   // Load demo coach data
   fetch('coach-i344297.json?' + Date.now())
@@ -1106,49 +1106,55 @@ function loadDemo() {
 
   // Static wellness data (last 30 days)
   wellnessData = [
-    {id:'2026-03-23',ctl:37.7,atl:27.3,restingHR:41},
-    {id:'2026-03-22',ctl:38.6,atl:31.5,restingHR:42,sleepSecs:27600,sleepScore:55},
-    {id:'2026-03-21',ctl:39.5,atl:36.3,restingHR:45,sleepSecs:33840,sleepScore:68},
-    {id:'2026-03-20',ctl:40.5,atl:41.9,restingHR:42,sleepSecs:27840,sleepScore:88},
-    {id:'2026-03-19',ctl:40.0,atl:38.8,restingHR:40,sleepSecs:28271,sleepScore:84},
-    {id:'2026-03-18',ctl:40.0,atl:38.5,restingHR:42,sleepSecs:28584,sleepScore:85},
-    {id:'2026-03-17',ctl:39.2,atl:33.7,restingHR:42,sleepSecs:30540,sleepScore:83},
-    {id:'2026-03-16',ctl:39.2,atl:32.4,restingHR:41,sleepSecs:27840,sleepScore:86},
-    {id:'2026-03-15',ctl:39.4,atl:33.1,restingHR:40,sleepSecs:28327,sleepScore:83},
-    {id:'2026-03-14',ctl:40.4,atl:38.2,restingHR:42,sleepSecs:29546,sleepScore:81},
-    {id:'2026-03-13',ctl:39.9,atl:35.0,restingHR:41,sleepSecs:27000,sleepScore:80},
-    {id:'2026-03-12',ctl:40.4,atl:37.1,restingHR:39,sleepSecs:29280,sleepScore:86},
-    {id:'2026-03-11',ctl:39.9,atl:33.3,restingHR:40,sleepSecs:31879,sleepScore:91},
-    {id:'2026-03-10',ctl:40.0,atl:33.2,restingHR:41,sleepSecs:31600,sleepScore:90},
-    {id:'2026-03-08',ctl:41.4,atl:39.7,restingHR:43,sleepSecs:29673,sleepScore:86},
-    {id:'2026-03-07',ctl:39.7,atl:29.2,restingHR:40,sleepSecs:28440,sleepScore:79},
-    {id:'2026-03-05',ctl:41.3,atl:36.0,restingHR:41,sleepSecs:27480,sleepScore:78},
-    {id:'2026-03-04',ctl:41.6,atl:37.0,restingHR:40,sleepSecs:29700,sleepScore:90},
-    {id:'2026-03-02',ctl:42.6,atl:42.1,restingHR:41,sleepSecs:27768,sleepScore:76},
-    {id:'2026-03-01',ctl:42.7,atl:42.9,restingHR:41,sleepSecs:26100,sleepScore:83},
-    {id:'2026-02-28',ctl:42.4,atl:40.9,restingHR:40,sleepSecs:26700,sleepScore:81},
-    {id:'2026-02-25',ctl:42.9,atl:43.0,restingHR:41,sleepSecs:30540,sleepScore:87},
-    {id:'2026-02-22',ctl:44.0,atl:50.2,restingHR:38,sleepSecs:29820,sleepScore:81}
+    {id:'2026-05-06',ctl:37.6,atl:36.4,restingHR:41,sleepSecs:25380,sleepScore:81},
+    {id:'2026-05-05',ctl:37.7,atl:36.8,restingHR:40,sleepSecs:26460,sleepScore:88},
+    {id:'2026-05-04',ctl:37.5,atl:35.4,restingHR:39,sleepSecs:26059,sleepScore:70},
+    {id:'2026-05-03',ctl:37.5,atl:35.0,restingHR:42,sleepSecs:26989,sleepScore:91},
+    {id:'2026-05-02',ctl:37.2,atl:32.8,restingHR:42,sleepSecs:27480,sleepScore:79},
+    {id:'2026-05-01',ctl:38.1,atl:37.8,restingHR:41,sleepSecs:32400,sleepScore:83},
+    {id:'2026-04-30',ctl:38.1,atl:37.7,restingHR:41,sleepSecs:28062,sleepScore:83},
+    {id:'2026-04-29',ctl:38.3,atl:39.2,restingHR:43,sleepSecs:29520,sleepScore:93},
+    {id:'2026-04-28',ctl:38.3,atl:38.9,restingHR:43,sleepSecs:27780,sleepScore:90},
+    {id:'2026-04-27',ctl:38.2,atl:38.5,restingHR:39,sleepSecs:24480,sleepScore:79},
+    {id:'2026-04-26',ctl:39.1,atl:44.5,restingHR:41,sleepSecs:27566,sleepScore:91},
+    {id:'2026-04-25',ctl:40.1,atl:51.3,restingHR:45,sleepSecs:27240,sleepScore:78},
+    {id:'2026-04-24',ctl:39.0,atl:46.4,restingHR:45,sleepSecs:26760,sleepScore:79},
+    {id:'2026-04-23',ctl:39.2,atl:48.6,restingHR:45,sleepSecs:26700,sleepScore:83},
+    {id:'2026-04-22',ctl:38.7,atl:47.0,restingHR:42,sleepSecs:28740,sleepScore:86},
+    {id:'2026-04-19',ctl:40.0,atl:48.0,restingHR:40,sleepSecs:28000,sleepScore:85},
+    {id:'2026-04-17',ctl:40.5,atl:46.5,restingHR:41,sleepSecs:27500,sleepScore:82},
+    {id:'2026-04-14',ctl:39.8,atl:44.0,restingHR:42,sleepSecs:28200,sleepScore:84},
+    {id:'2026-04-12',ctl:39.5,atl:42.0,restingHR:41,sleepSecs:27800,sleepScore:80},
+    {id:'2026-04-09',ctl:39.0,atl:45.0,restingHR:42,sleepSecs:28500,sleepScore:86},
+    {id:'2026-04-07',ctl:38.5,atl:40.0,restingHR:40,sleepSecs:29000,sleepScore:88}
   ];
 
   // Static activities (last 30 days)
   activitiesData = [
-    {name:'MyWhoosh - 10 x 3',start_date_local:'2026-03-20T10:13:27',type:'VirtualRide',distance:23121,moving_time:2727,average_heartrate:121,icu_training_load:62},
-    {name:'Southwark Running',start_date_local:'2026-03-19T08:13:09',type:'Run',distance:11465,moving_time:3478,average_heartrate:136,icu_training_load:41},
-    {name:'DP - 2k',start_date_local:'2026-03-18T08:40:13',type:'Run',distance:14270,moving_time:3714,average_heartrate:155,icu_training_load:70,total_elevation_gain:112},
-    {name:'Loughborough Junction',start_date_local:'2026-03-17T08:15:50',type:'Run',distance:10181,moving_time:2953,average_heartrate:144,icu_training_load:42,total_elevation_gain:159},
-    {name:'Nido',start_date_local:'2026-03-16T07:57:52',type:'Run',distance:8056,moving_time:2404,average_heartrate:135,icu_training_load:28},
-    {name:'MyWhoosh - 3 x 10',start_date_local:'2026-03-14T15:58:49',type:'VirtualRide',distance:23569,moving_time:2977,average_heartrate:114,icu_training_load:56},
-    {name:'Ruskin park',start_date_local:'2026-03-10T10:07:40',type:'Run',distance:8053,moving_time:2457,average_heartrate:130,icu_training_load:25},
-    {name:'Paddock Wood half marathon',start_date_local:'2026-03-08T10:00:05',type:'Run',distance:21126,moving_time:4654,average_heartrate:167,icu_training_load:105,total_elevation_gain:77},
-    {name:'Shakeout',start_date_local:'2026-03-07T07:40:59',type:'Run',distance:4325,moving_time:1159,average_heartrate:141,icu_training_load:16},
-    {name:'Senegal Way',start_date_local:'2026-03-05T10:36:02',type:'Run',distance:8052,moving_time:2243,average_heartrate:141,icu_training_load:30},
-    {name:'DP - 1500/200',start_date_local:'2026-03-04T11:11:24',type:'Run',distance:10708,moving_time:3032,average_heartrate:139,icu_training_load:40},
-    {name:'The Royal Observatory',start_date_local:'2026-03-02T07:29:26',type:'Run',distance:10368,moving_time:2852,average_heartrate:140,icu_training_load:37},
-    {name:'Gipsy Hill',start_date_local:'2026-03-01T07:27:03',type:'Run',distance:14904,moving_time:4234,average_heartrate:141,icu_training_load:56,total_elevation_gain:190},
-    {name:'Burgess parkrun',start_date_local:'2026-02-28T09:02:54',type:'Run',distance:5021,moving_time:1019,average_heartrate:163,icu_training_load:22},
-    {name:'DP - 2k rhythm',start_date_local:'2026-02-25T08:37:34',type:'Run',distance:12889,moving_time:3432,average_heartrate:146,icu_training_load:54},
-    {name:'DR x Redemption February',start_date_local:'2026-02-22T08:50:53',type:'Run',distance:23698,moving_time:6277,average_heartrate:150,icu_training_load:104}
+    {name:'Southwark Running',start_date_local:'2026-05-06T08:00:00',type:'Run',distance:8200,moving_time:2400,average_heartrate:142,icu_training_load:34},
+    {name:'Southwark - 1000/400/1000',start_date_local:'2026-05-05T08:00:00',type:'Run',distance:11265,moving_time:3300,average_heartrate:142,icu_training_load:46},
+    {name:'Southwark Running',start_date_local:'2026-05-04T08:00:00',type:'Run',distance:9656,moving_time:2880,average_heartrate:130,icu_training_load:38},
+    {name:'Southwark - 3 x 2',start_date_local:'2026-05-03T08:00:00',type:'Run',distance:11748,moving_time:3240,average_heartrate:146,icu_training_load:49},
+    {name:'Amsterdam - EIM 400s',start_date_local:'2026-05-01T10:00:00',type:'Run',distance:9334,moving_time:2700,average_heartrate:140,icu_training_load:39},
+    {name:'Amsterdam Running',start_date_local:'2026-04-30T10:00:00',type:'Run',distance:6437,moving_time:1740,average_heartrate:141,icu_training_load:28},
+    {name:'Amsterdam - Surges',start_date_local:'2026-04-29T10:00:00',type:'Run',distance:9817,moving_time:2640,average_heartrate:139,icu_training_load:41},
+    {name:'Amsterdam - Surges',start_date_local:'2026-04-28T10:00:00',type:'Run',distance:9495,moving_time:2520,average_heartrate:142,icu_training_load:41},
+    {name:'Southwark - Sub-threshold - 10 mins',start_date_local:'2026-04-25T08:00:00',type:'Run',distance:19312,moving_time:5400,average_heartrate:148,icu_training_load:83},
+    {name:'Southwark Running',start_date_local:'2026-04-24T08:00:00',type:'Run',distance:8047,moving_time:2400,average_heartrate:145,icu_training_load:32},
+    {name:'Southwark Running',start_date_local:'2026-04-23T08:00:00',type:'Run',distance:14326,moving_time:4140,average_heartrate:148,icu_training_load:59},
+    {name:'Southwark - EIM 1000/200/1000',start_date_local:'2026-04-22T08:00:00',type:'Run',distance:10139,moving_time:3060,average_heartrate:143,icu_training_load:41},
+    {name:'Southwark - EIM 1000 classic',start_date_local:'2026-04-21T08:00:00',type:'Run',distance:14326,moving_time:4200,average_heartrate:138,icu_training_load:58},
+    {name:'Southwark - Surges',start_date_local:'2026-04-20T08:00:00',type:'Run',distance:12875,moving_time:3840,average_heartrate:135,icu_training_load:52},
+    {name:'Southwark Running',start_date_local:'2026-04-19T08:00:00',type:'Run',distance:20437,moving_time:6000,average_heartrate:139,icu_training_load:82},
+    {name:'Southwark - EIM 1000 classic',start_date_local:'2026-04-17T08:00:00',type:'Run',distance:13841,moving_time:3900,average_heartrate:145,icu_training_load:58},
+    {name:'Southwark - Surges',start_date_local:'2026-04-16T08:00:00',type:'Run',distance:11265,moving_time:3300,average_heartrate:142,icu_training_load:45},
+    {name:'Southwark - EIM 1000/200/1000',start_date_local:'2026-04-15T08:00:00',type:'Run',distance:9495,moving_time:3000,average_heartrate:138,icu_training_load:36},
+    {name:'Southwark - EIM 1000 classic',start_date_local:'2026-04-14T08:00:00',type:'Run',distance:13841,moving_time:4020,average_heartrate:142,icu_training_load:56},
+    {name:'Southwark - EIM 400s',start_date_local:'2026-04-13T08:00:00',type:'Run',distance:13841,moving_time:4140,average_heartrate:143,icu_training_load:56},
+    {name:'Southwark Running',start_date_local:'2026-04-12T08:00:00',type:'Run',distance:8369,moving_time:2520,average_heartrate:131,icu_training_load:34},
+    {name:'4×2k @ 5:35/mi',start_date_local:'2026-04-09T08:00:00',type:'Run',distance:13680,moving_time:3840,average_heartrate:148,icu_training_load:63},
+    {name:'Southwark Running',start_date_local:'2026-04-08T08:00:00',type:'Run',distance:9656,moving_time:3000,average_heartrate:142,icu_training_load:36},
+    {name:'MyWhoosh - 30 min sweetspot tempo',start_date_local:'2026-04-07T15:00:00',type:'VirtualRide',distance:22050,moving_time:2580,average_heartrate:125,icu_training_load:49}
   ];
 
   renderPlan();
