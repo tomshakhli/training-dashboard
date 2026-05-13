@@ -1,59 +1,126 @@
 {
   "athlete_id": "i540228",
-  "coach_note": "Mid-April update. Chris raced a 10K on 12 April in 39:37 — a massive result that neither of us expected this early in the block. He went out hard behind a group on a downhill start into the wind, settled at 4:00/km, wobbled at 3.5km thinking he couldn't sustain it, got pulled along by a clubmate, found control at 6km, then rallied through a tough headwind finish. Average HR 150 (91.5% max), max 157 (95.7% max) — a properly executed race effort that shows his aerobic engine is significantly further along than the 20:00 5K estimate from two weeks ago.\n\nThe 39:37 10K equates to roughly 19:00-19:15 5K fitness right now, possibly faster on a good day. His own target of sub-19:00 at Harwich on 28 April is realistic. He said he wasn't completely drained after — there may have been a few more seconds in the tank without the headwind.\n\nThe training data tells the same story. He's executing sessions well: sub-threshold reps at 141-142bpm avg HR (right in the 86-91% zone), easy runs genuinely easy at 97-111bpm, and his Garmin self-evaluations show he's rating sessions appropriately (RPE 1 for easy, 3-4 for quality, 8 for the race). CTL has jumped from 29 to 36.6 in two weeks — a sharp but sustainable ramp given the low starting point and the fact that he's responding well.\n\nWellness markers are all green. HRV has made a significant jump into the 60s-70s range (was in the 50s two weeks ago). Resting HR has dropped to 33-35bpm. VO2max estimate up to 61. Weight back to 70.8kg (the 76.2kg artefact has cleared). Sleep is still variable (scores 72-94) but adequate. He's feeling great and his confidence is building — that race was exactly the boost he needed after four months of struggle.\n\nPlan adjustment: the Bromley 10K that was scheduled as a fun run on 12 April became this 10K race instead (Tendring, not Bromley — may have been a late switch). The week's structure held well around it. No changes needed to the rest of the plan — the freshen week (wk3) into Harwich 5K (wk4 Tue 28 Apr) is perfectly timed. If anything, this result means we can be more ambitious with the 5K target.",
-  "coach_date": "2026-04-14",
-  "goal_race": "Harwich 5K Series (28 Apr, 19 May, 9 Jun)",
-  "goal_date": "2026-04-28",
-  "goal_time": "sub-19:00",
-  "goal_pace": "3:48/km",
-  "wellness_notes": "Wellness data as of 14 April 2026 — all markers trending positively. Resting HR: 33-36bpm over the last two weeks, with a clear downward trend from 37-38 at the start of April to 33-35 now. This is a strong recovery and adaptation signal. HRV: significant improvement — now consistently in the 60-77 range compared to mid-50s two weeks ago. The 77 reading on 11 April is Chris's highest in the data we have. Only dips to 51-56 on days after harder sessions, which is a normal acute response. CTL: 36.6 and climbing fast (was 29 on 2 April). Ramp rate is high at +6.3 but appropriate given the low starting point and the training load being mostly aerobic. ATL at 57 reflects the recent race loading. Weight: 70.8kg confirmed on 7 April — the 76.2kg artefact from 27 March has been resolved. VO2max: Garmin estimate now 61, up from 58-59 pre-plan. Sleep: scores 72-94, quality variable (mix of 1-3 ratings). Average duration ~6.5-7 hours. Adequate but could be better — consistent bedtime would help.",
-  "upcoming_training_notes": "10-week Norwegian Singles plan is live on the Intervals.icu calendar (6 Apr – 14 Jun 2026). Currently in week 2 of the block.\n\nImmediate focus: Wk3 (20-26 Apr) is the freshen week before Harwich 5K Race 1 on Tue 28 April. Volume drops to 45km with the benchmark 3x3km on Thursday and reduced easy running. The goal is to arrive at the race fresh and confident — Chris is already feeling both.\n\nRace schedule: 28 Apr Harwich 5K R1 (target: sub-19:00), 10 May Colchester 10K (marker race, no taper), 19 May Harwich 5K R2, 9 Jun Harwich 5K R3.\n\nBenchmark: 3x3km sub-threshold appears in weeks 3, 4, 5, 6, 7, and 10. First benchmark is Thu 23 April — this will give us a baseline to track pace at 86-91% max HR.\n\nHR zone calibration: The 10K race data gives us a much better picture. Chris averaged 150bpm over 39:37 at race effort — this is right at his Garmin-estimated LTHR of 149. His max in the race was 157 vs Garmin's 164 max HR estimate. This suggests either the max HR estimate is slightly high or he had headroom. Worth watching the Harwich 5K data for a higher max HR reading to calibrate.\n\nStrength: Still needs attention. No strength sessions logged in the last two weeks. Minimum 1-2 per week.",
-  "march_feedback_summary": "Holiday was the turning point. Before it, every run was a struggle. Since returning from Tenerife, every run has felt like a step forward. Strength training neglected — acknowledged and wants to address. Sleep inconsistent. Energy improving. Wants to avoid overdoing it while not underdoing it.",
-  "garmin_self_evaluations": {
-    "summary": "Chris is using Garmin RPE and feel ratings consistently. Pattern shows good self-awareness: easy runs rated RPE 1 / feel 2-3, sub-threshold sessions RPE 3-4 / feel 1-2, race RPE 8 / feel 2. The feel ratings suggest he's finding the quality sessions satisfying (feel 1 = good) and the easy runs comfortable. The race was hard but not devastating (feel 2 = ok, not great not awful).",
-    "recent_ratings": [
-      {"date": "2026-04-14", "session": "3x2km sub-threshold", "rpe": 3, "feel": 1},
-      {"date": "2026-04-13", "session": "Easy run 8km", "rpe": 1, "feel": 2},
-      {"date": "2026-04-12", "session": "10K race 39:37", "rpe": 8, "feel": 2},
-      {"date": "2026-04-12", "session": "Race warm-up", "rpe": 4, "feel": 3},
-      {"date": "2026-04-11", "session": "Shakeout 5K", "rpe": 1, "feel": 2},
-      {"date": "2026-04-10", "session": "6x1km sub-threshold", "rpe": 3, "feel": 1},
-      {"date": "2026-04-08", "session": "3x2km sub-threshold", "rpe": 4, "feel": 1},
-      {"date": "2026-04-07", "session": "Easy run 7km", "rpe": 1, "feel": 2},
-      {"date": "2026-04-06", "session": "6x1km sub-threshold", "rpe": 4, "feel": 2},
-      {"date": "2026-04-05", "session": "Easy run 7km", "rpe": 1, "feel": 2},
-      {"date": "2026-04-04", "session": "Long run 13km", "rpe": 1, "feel": 2},
-      {"date": "2026-04-03", "session": "6x1km sub-threshold", "rpe": 4, "feel": 2},
-      {"date": "2026-04-02", "session": "3x2km sub-threshold", "rpe": 4, "feel": 1}
-    ]
-  },
-  "predictions": [
+  "coach_note": "Mid-May update. Chris ran 39:04 at Colchester 10K — a new PB and his first time under 39:30. He's a touch disappointed because he didn't dip under 39, but the execution issues he describes (the 500m interval surging cycle, the deceiving hill at 9km, conservative thinking in the final km) all suggest there's more in the tank. By his own admission, when he was running 3:45/km pace he 'felt really good' — that's a meaningful indicator for shorter race distances. The Harwich 5K on 19 May is now the focus, and a sub-19 attempt is firmly on the table.\n\nWe've recalibrated all upcoming pace targets to his new 39:00 10K fitness: 1K reps at 4:00-4:07/km (15K pace), 2K reps at 4:06-4:13/km (HM pace), 3K reps at 4:12-4:19/km (30K pace). Garmin structured workouts now use pace targets instead of HR % so the watch can guide him through reps properly. He's also added Southend Half Marathon on 14 June as a B-race — that fits neatly at the end of the block as a longer fitness check.\n\nThe broader story: 12 weeks ago we estimated 20:00 5K fitness post-illness. He's now sitting on 39:04 10K (≈19:00 5K equivalent) and the trend is still pointing up. CTL has climbed from 29 to 41 over the block. HRV is at all-time highs (multiple 80s and 90s readings this past week, peaking at 97 today). Resting HR has dropped to 32-35 range. He's adapting brilliantly. The next two weeks should be about precision execution rather than fitness gains — the fitness is there, he needs to race it cleanly.\n\nKey reflection for Harwich 19 May: His own diagnosis of the Colchester pacing — chasing 500m splits and yo-yoing — is the right lesson. For a 5K, the plan should be simple. Lock onto 3:48/km from km 1 and ride it. No watch surging. Let it feel uncomfortable from km 2 onwards. The fitness is there.",
+  "coach_date": "2026-05-13",
+  "goal_race": "Harwich 5K Race 2 (19 May), Southend HM (14 Jun)",
+  "goal_date": "2026-05-19",
+  "goal_time": "sub-19:00 (5K), sub-1:25 (HM)",
+  "goal_pace": "3:48/km for 5K, 4:00/km for HM",
+  "race_history": [
     {
-      "event": "Harwich 5K Race 1",
-      "race": "5K",
+      "date": "2026-04-12",
+      "race": "Tendring 10K",
+      "time": "39:37",
+      "avg_pace": "3:57/km",
+      "avg_hr": 150,
+      "max_hr": 157,
+      "rpe": 8,
+      "feel": 2,
+      "notes": "First race back. Hard effort with headwind on the run-in. Pleased with result."
+    },
+    {
       "date": "2026-04-28",
-      "range": "18:30-19:15",
-      "target": "sub-19:00",
-      "on_track": true,
-      "rationale": "39:37 10K on 12 April equates to ~19:00-19:15 5K. Two more weeks of training plus a proper freshen week should unlock sub-19. Chris woke up feeling confident on race day — motivation and belief are high. Flat course at Harwich is an advantage over the Tendring 10K course."
+      "race": "Harwich 5K Race 1",
+      "time": "19:43",
+      "avg_pace": "3:56/km",
+      "avg_hr": 148,
+      "max_hr": 155,
+      "rpe": 9,
+      "feel": 2,
+      "notes": "Windy conditions (gusts to 13m/s, 44% headwind). Good effort but conditions tough."
     },
     {
-      "event": "Colchester 10K",
-      "race": "10K",
       "date": "2026-05-10",
-      "range": "38:30-39:30",
-      "target": "sub-39:00",
-      "on_track": true,
-      "rationale": "If Harwich goes well and training continues, 4 more weeks of build should bring the 10K down by 30-60 seconds from the 39:37. Colchester is a fast course. No taper — this is off normal training volume."
+      "race": "Colchester 10K",
+      "time": "39:04",
+      "avg_pace": "3:54/km",
+      "rpe": null,
+      "feel": null,
+      "notes": "New PB. Executed poorly per Chris's own assessment — 500m splits caused surging/yo-yoing. Felt great at 3:45/km when surging. Deceiving hill at 9km cost time. GPS ran long. Sub-39 still attainable."
+    }
+  ],
+  "wellness_notes": "Wellness as of 13 May 2026 — Chris is in the strongest physical state of the block. Resting HR has dropped to 32-36 range (was 35-38 a month ago). HRV has reached new highs: 72, 85, 82, 63, 80, 69, 72, 85, 83, 97 over the past 10 days. Today's 97 is the highest of the block. CTL is 41.4, stable around 40-41 for the past 2 weeks — a healthy plateau after the climb from 29. ATL is 47.6, well-balanced (TSB around -6). Weight stable at 71.7kg. VO2max Garmin estimate at 62. Sleep variable as ever (scores 64-89, quality mostly 2-3) — his own admission that the past week's sleep, nutrition and travel hasn't been ideal is consistent with the lower sleep scores 5-8 May. Despite that, training and racing have been strong, which speaks to his underlying fitness reserve. \n\nKey watch items: (1) HRV at 97 today is unusually high — could indicate either excellent recovery or possible parasympathetic dominance. Worth monitoring whether the trend continues. (2) Resting HR 35 today is normal for him. (3) The disclaimers Chris gave about poor recent sleep/nutrition are worth noting but didn't visibly hurt the race result. (4) Plan around Southend HM 14 Jun: this is a step up in distance — he hasn't raced longer than 10K in this block. The week 9 long run of 16km and week 10 long run of 20km will help, but a proper HM-specific block would be ideal next.",
+  "health_trends": {
+    "ctl": {
+      "value": 41.4,
+      "trend": "stable",
+      "change_2wk": "+0.2",
+      "change_4wk": "+5.4",
+      "interpretation": "Healthy plateau after sharp build. Indicates training load is well-absorbed."
     },
+    "hrv_avg_7d": {
+      "value": 80.4,
+      "trend": "rising",
+      "change_2wk": "+12",
+      "change_4wk": "+25",
+      "interpretation": "Major improvement. From mid-50s baseline at start of block to consistent 70s-90s now. Today peaked at 97."
+    },
+    "resting_hr_avg_7d": {
+      "value": 35,
+      "trend": "stable_low",
+      "change_2wk": "-1",
+      "change_4wk": "-2",
+      "interpretation": "Solidly in 32-36 range. Down from 35-38 baseline. Indicates strong cardiovascular adaptation."
+    },
+    "sleep_score_avg_7d": {
+      "value": 76,
+      "trend": "variable",
+      "interpretation": "Inconsistent (range 64-89). Chris flagged recent sleep as poor — area to address."
+    },
+    "weight": {
+      "value": 71.7,
+      "trend": "stable",
+      "interpretation": "Within normal day-to-day variation."
+    },
+    "vo2max_garmin": {
+      "value": 62,
+      "trend": "rising",
+      "change_4wk": "+1",
+      "interpretation": "Up from 58 at start of block."
+    }
+  },
+  "current_pace_zones": {
+    "basis": "39:00 10K fitness (post 39:04 Colchester race)",
+    "short_intervals_1k": "4:00-4:07/km (15K pace)",
+    "medium_intervals_2k": "4:06-4:13/km (HM pace)",
+    "long_intervals_3k": "4:12-4:19/km (30K pace)",
+    "easy_pace": "5:00-5:30/km",
+    "long_run_pace": "4:50-5:20/km",
+    "race_paces": {
+      "5K_target": "3:48/km (sub-19:00)",
+      "10K_current": "3:54/km (39:00)",
+      "HM_target": "4:00/km (sub-1:25)"
+    }
+  },
+  "upcoming_training_notes": "All upcoming structured workouts updated from HR-based (86-91% HR) to pace-based targets. Pace zones derived from his new 39:00 10K fitness per the standard percentage table: 1K reps at 15K pace (4:00-4:07/km), 2K reps at HM pace (4:06-4:13/km), 3K reps at 30K pace (4:12-4:19/km).\n\nNext race: Harwich 5K Race 2 on Tue 19 May. Pre-race week (this week): 8x1km Wed 13 May (PACE-BASED), 3x3km Fri 15 May (BENCHMARK, last hard session before race), easy Sat, long Sun. Race Tuesday.\n\nNew B-race added: Southend Half Marathon on 14 June (originally the long run day). The week 10 plan now reframes around this: keep the 3x3km benchmark Thu 11 Jun, replace the 20km long run with the Southend HM itself.\n\nPacing guidance for Harwich 5K (sub-19 attempt): Target 3:48/km (or 1:54 per 500m) but DO NOT chase splits within a lap. Lock onto effort by km 1, hold through km 2-3, push hard from km 4. Set watch to whole-km laps not 500m to avoid the surging cycle from Colchester.",
+  "pacing_lessons_from_colchester": "Chris's own race report identified the key execution issues clearly: (1) 500m intervals caused him to surge whenever he saw a split slower than target, then over-correct. (2) The 'deceiving hill' at 9km broke his rhythm in the final km. (3) He went conservative at 8.5-9km when he could have pushed harder. (4) When running 3:45/km felt good in the surges — suggests genuine sub-19 5K fitness is present. Key takeaway: simpler pacing strategy for shorter races. Lock onto effort, not splits.",
+  "predictions": [
     {
       "event": "Harwich 5K Race 2",
       "race": "5K",
       "date": "2026-05-19",
-      "range": "18:00-18:45",
+      "range": "18:30-19:10",
+      "target": "sub-19:00",
+      "on_track": true,
+      "rationale": "39:04 10K (3:54/km avg) extrapolates to ~18:50-19:00 over 5K. Surging at 3:45/km felt good — that's sub-19 pace for him. With cleaner pacing (whole-km laps, no surging) and a non-windy day, sub-19 is achievable. Conservative bound accounts for residual fatigue from 10K race 9 days prior."
+    },
+    {
+      "event": "Harwich 5K Race 3",
+      "race": "5K",
+      "date": "2026-06-09",
+      "range": "18:15-18:50",
       "target": "sub-18:30",
       "on_track": true,
-      "rationale": "7 weeks into the block with CTL likely approaching 40+. If benchmark sessions show continued pace improvement at the same HR, sub-18:30 is a realistic stretch target. This is where the Norwegian Singles work should really start paying off."
+      "rationale": "By Race 3 Chris will have 3 more weeks of training plus a recovery week. If Race 2 confirms sub-19 fitness, sub-18:30 is realistic. CTL should hold around 40-42."
+    },
+    {
+      "event": "Southend Half Marathon",
+      "race": "HM",
+      "date": "2026-06-14",
+      "range": "1:23:30-1:26:00",
+      "target": "sub-1:25",
+      "on_track": true,
+      "rationale": "39:00 10K extrapolates to ~1:25:30 HM via standard race conversion tables. Chris hasn't done HM-specific training in this block, so his pace will likely fade in the second half. But the aerobic base from Norwegian Singles work should hold up well at HM effort. Conservative range allows for the longer distance being relatively untrained territory."
     }
   ]
 }
