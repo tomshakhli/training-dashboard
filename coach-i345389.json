@@ -1,7 +1,7 @@
 {
   "athlete_id": "i345389",
-  "coach_note": "Lorcan is on holiday in SE Asia — enjoying some well-earned downtime in the heat. Running is treadmill-only for now, keeping things ticking over with sessions like today's 400s (12.1km, avg HR 144, max 175). No pressure on volume or structure — this is maintenance mode. Full training resumes in April when he's back home. The big goal is Berlin Marathon in September, targeting sub-3:20. Lorcan has unfinished business after having to withdraw from Valencia Marathon last year. CTL is low at 5.3 — expected and totally fine. We have 5+ months to build properly once he's back. Enjoy the break.",
-  "coach_date": "2026-03-25",
+  "coach_note": "Welcome to Block 2 — a 10-week Norwegian Singles base build (26 May → 2 Aug) laying the foundation for Berlin Marathon. Block 1 was a triumph: CTL up from 19 to 36, VO2max nudged 49→51, and the 5×3km benchmark plus 24km long run showed the system is responding. Now we step up. Tuesdays alternate: odd weeks 3×10-12min @ 30K pace (4:34-4:42/km), even weeks 5-6×6min @ HM pace (4:28-4:36/km). Thursdays are 30/30s @ 15K pace (4:22-4:30/km), growing from 2×10 to 18+18 reps across the block — anything above 20 splits into two sets with 2min rest. Long run climbs +1km/wk from 22 to 30 (capped) — this is where Berlin gets won. Sub-T quality capped at 36min per session to keep the build sustainable. The non-negotiable add-on: two strength sessions per week. Lorcan has invested in equipment for a reason — the last 10km of Berlin is where unsupported runners fade. Bulletproofing the body now means he holds form when others crumble. S&C is not optional supplementary work; it's load-bearing infrastructure. Easy days must be genuinely easy (<148 bpm) — this was a flag in Block 1 and the bigger volumes this block make it more important, not less. Trust the pace targets, trust the easy days, trust the strength work.",
+  "coach_date": "2026-05-19",
   "goal_race": "Berlin Marathon",
   "goal_date": "2026-09-27",
   "goal_time": "3:19:59",
@@ -11,10 +11,10 @@
       "event": "Berlin Marathon",
       "race": "Marathon",
       "date": "2026-09-27",
-      "range": "3:18–3:25",
+      "range": "3:15–3:22",
       "target": "3:19:59",
       "on_track": true,
-      "rationale": "Currently in maintenance mode on holiday — CTL at 5.3 is expected. With 5+ months of structured build from April, there is ample time to develop the aerobic base and marathon-specific fitness needed for sub-3:20. Previous Valencia Marathon training block shows he can handle the volume. On track provided the build starts in April as planned."
+      "rationale": "Block 1 base building delivered ahead of schedule — CTL nearly doubled (19→36), VO2max trending up, sub-threshold sessions executing well at target HR. Block 2 builds the marathon-specific endurance with long runs to 30km and continues sub-T development. Adding 2x/week strength work to bulletproof against late-race fade, which is the primary risk factor for Berlin given Lorcan's previous Valencia DNF. With 18 weeks until race day after this block, there's room for a dedicated 6-8 week marathon-specific phase post-base. On track for sub-3:20."
     }
   ]
 }
