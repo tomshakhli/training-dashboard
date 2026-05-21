@@ -1,0 +1,66 @@
+{
+  "athlete_id": "i588757",
+  "coach_note": "Welcome back, Claire. After your sub-3:45 London Marathon and full May recovery, we're rebuilding aerobically over 16 weeks with a focus on shorter events — 5K through to a Gosport HM in November. The structure is Lorcan-style: Tuesday 30/30 fartlek every week (the staple sharpening session), Friday alternates between HM-pace mediums and 30K-pace longs, Sunday is the long run. 4 days/week in June stepping to 5 in July. We'll race four 5Ks and a 10K through the build, then sharpen for Fleet 10K (25 Oct) and Gosport HM (15 Nov). Volume ramps 30km → 70km over 16 weeks. Sub-threshold quality stays at 14-18% of weekly total — well within the Norwegian Singles guideline.",
+  "coach_date": "2026-05-20",
+  "goal_race": "Gosport Half Marathon",
+  "goal_date": "2026-11-15",
+  "goal_time": "TBD — set after Fleet 10K",
+  "goal_pace": "TBD",
+  "phase": "Base rebuild — short-event focus",
+  "predictions": [
+    {
+      "event": "5K",
+      "race": "End-June 5K (parkrun)",
+      "date": "27 Jun",
+      "range": "22:30–23:30",
+      "target": "Sub-23:00",
+      "on_track": true,
+      "rationale": "First race off four weeks of rebuilding from May recovery. Aerobic fitness from London still present; this is a fitness check, not a peak effort."
+    },
+    {
+      "event": "5K",
+      "race": "End-July 5K",
+      "date": "25 Jul",
+      "range": "22:00–22:45",
+      "target": "Sub-22:30",
+      "on_track": true,
+      "rationale": "Four extra weeks of structured 30/30 work plus sub-threshold mediums should sharpen turnover noticeably."
+    },
+    {
+      "event": "10K",
+      "race": "End-August 10K",
+      "date": "29 Aug",
+      "range": "46:00–47:30",
+      "target": "Sub-47:00",
+      "on_track": true,
+      "rationale": "Coming off the highest training-load block to date (Wk 9-11 at 55-60km). 30K-pace mediums building specific endurance."
+    },
+    {
+      "event": "5K",
+      "race": "End-September 5K",
+      "date": "26 Sep",
+      "range": "21:30–22:15",
+      "target": "Sub-22:00",
+      "on_track": true,
+      "rationale": "Post-peak (W15 at 68km). Should be Claire's fastest 5K of the block."
+    },
+    {
+      "event": "10K",
+      "race": "Fleet 10K",
+      "date": "25 Oct",
+      "range": "45:00–46:30",
+      "target": "Sub-45:30",
+      "on_track": true,
+      "rationale": "Beyond planned window — predictions to be refined after W16 and the late-Sep 5K result."
+    },
+    {
+      "event": "Half marathon",
+      "race": "Gosport Half Marathon",
+      "date": "15 Nov",
+      "range": "1:39–1:43",
+      "target": "Sub-1:40",
+      "on_track": true,
+      "rationale": "Goal race. Beyond planned window. Predictions to firm up after Fleet 10K. Flat fast course — well-suited to a PB attempt."
+    }
+  ]
+}
